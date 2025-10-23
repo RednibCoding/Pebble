@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Download - Pebble</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="public/pebble-icon.png">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <img src="public/pebble-icon.png" alt="Pebble Logo" class="logo">
+                <span class="brand-name">Pebble</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="documentation.html">Documentation</a></li>
+                <li><a href="cheatsheet.html">Cheatsheet</a></li>
+                <li><a href="download.html" class="active">Download</a></li>
+                <li><a href="architecture.html">Architecture</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container" style="padding: 3rem 0;">
+        <h1 style="text-align: center; margin-bottom: 1rem;">Download Pebble</h1>
+        <p style="text-align: center; color: #95a5a6; font-size: 1.2rem; margin-bottom: 3rem;">
+            Current Version: <strong>0.1.0</strong>
+        </p>
+
+        <section class="download-section">
+            <h2>Pebble Interpreter</h2>
+            <p>Download the Pebble interpreter for your operating system:</p>
+            
+            <div class="download-grid">
+                <div class="download-card">
+                    <div class="download-icon">🐧</div>
+                    <h3>Linux</h3>
+                    <p>64-bit executable for Linux</p>
+                    <a href="dist/pebble-linux-v0.1.0.zip" class="btn btn-primary download-btn">
+                        Download for Linux
+                    </a>
+                    <p class="download-size">~2 MB</p>
+                </div>
+
+                <div class="download-card">
+                    <div class="download-icon">🍎</div>
+                    <h3>macOS</h3>
+                    <p>64-bit executable for macOS</p>
+                    <a href="dist/pebble-macos-v0.1.0.zip" class="btn btn-primary download-btn">
+                        Download for macOS
+                    </a>
+                    <p class="download-size">~800 KB</p>
+                </div>
+
+                <div class="download-card">
+                    <div class="download-icon">🪟</div>
+                    <h3>Windows</h3>
+                    <p>64-bit executable for Windows</p>
+                    <a href="dist/pebble-windows-v0.1.0.zip" class="btn btn-primary download-btn">
+                        Download for Windows
+                    </a>
+                    <p class="download-size">~800 KB</p>
+                </div>
+            </div>
+
+            <div class="install-instructions">
+                <h3>Installation Instructions</h3>
+                <div class="code-block">
+                    <pre><code><span class="comment"># 1. Download and extract the zip file</span>
+<span class="comment"># 2. Make the binary executable (Linux/macOS only):</span>
+chmod +x pebble-linux    <span class="comment"># or pebble-macos</span>
+
+<span class="comment"># 3. Move to a directory in your PATH (optional):</span>
+sudo mv pebble-linux /usr/local/bin/pebble
+
+<span class="comment"># 4. Verify installation:</span>
+pebble --version</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <section class="download-section">
+            <h2>VS Code Extension</h2>
+            <p>Get syntax highlighting, error reporting, and IDE features for Pebble in Visual Studio Code.</p>
+            
+            <div class="download-grid">
+                <div class="download-card">
+                    <div class="download-icon">📦</div>
+                    <h3>Pebble for VS Code</h3>
+                    <p>Official VS Code extension with full language support</p>
+                    <a href="dist/pebble-vscode-v0.1.0.vsix" class="btn btn-primary download-btn">
+                        Download VSIX
+                    </a>
+                    <p class="download-size">~2.2 MB</p>
+                </div>
+            </div>
+
+            <div class="install-instructions">
+                <h3>How to Install the VS Code Extension</h3>
+                
+                <h4>Method 1: Using VS Code UI</h4>
+                <ol>
+                    <li>Download the <code>.vsix</code> file</li>
+                    <li>Open Visual Studio Code</li>
+                    <li>Go to the Extensions view (Ctrl+Shift+X or Cmd+Shift+X)</li>
+                    <li>Click the "..." menu at the top of the Extensions view</li>
+                    <li>Select "Install from VSIX..."</li>
+                    <li>Choose the downloaded <code>pebble-vscode-v0.1.0.vsix</code> file</li>
+                    <li>Restart VS Code when prompted</li>
+                </ol>
+
+                <h4>Method 2: Using Command Line</h4>
+                <div class="code-block">
+                    <pre><code><span class="comment"># Install the extension using the code command:</span>
+code --install-extension pebble-vscode-v0.1.0.vsix
+
+<span class="comment"># Verify installation:</span>
+code --list-extensions | grep pebble</code></pre>
+                </div>
+
+                <h4>Extension Features</h4>
+                <ul>
+                    <li>✅ Syntax highlighting for <code>.pbl</code> files</li>
+                    <li>✅ Error diagnostics and warnings</li>
+                    <li>✅ Code completion and IntelliSense</li>
+                    <li>✅ Go to definition (F12)</li>
+                    <li>✅ Batch-renaming</li>
+                    <li>✅ Hover documentation for built-in functions and doc comments (##)</li>
+                </ul>
+            </div>
+        </section>
+
+        
+
+        <section class="download-section">
+            <h2>System Requirements</h2>
+            <div style="background: #2c3e50; color: #ecf0f1; padding: 2rem; border-radius: 8px;">
+                <h4 style="margin-top: 0;">Minimum Requirements:</h4>
+                <ul>
+                    <li><strong>OS:</strong> Linux (x86_64), macOS (x86_64), or Windows (x86_64)</li>
+                    <li><strong>RAM:</strong> ~3 MB for basic scripts (grows with program complexity)</li>
+                    <li><strong>Disk Space:</strong> ~2 MB for interpreter</li>
+                    <li><strong>Dependencies:</strong> None! Pebble is a standalone executable</li>
+                </ul>
+            </div>
+        </section>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Pebble Language. Fast, simple, powerful.</p>
+            <p>
+                <a href="index.html">Home</a> • 
+                <a href="documentation.html">Documentation</a> • 
+                <a href="download.html">Download</a>
+            </p>
+        </div>
+    </footer>
+
+    <style>
+        .download-section {
+            margin-bottom: 4rem;
+        }
+
+        .download-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .download-card {
+            background: linear-gradient(135deg, #34495e 0%, #2c3e50 100%);
+            padding: 2rem;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            transition: transform 0.2s;
+        }
+
+        .download-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 12px rgba(0,0,0,0.4);
+        }
+
+        .download-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        .download-card h3 {
+            margin: 0.5rem 0;
+            color: white;
+        }
+
+        .download-card p {
+            color: #95a5a6;
+            margin: 0.5rem 0;
+        }
+
+        .download-btn {
+            display: inline-block;
+            margin: 1.5rem 0 0.5rem 0;
+            padding: 0.75rem 2rem;
+        }
+
+        .download-size {
+            font-size: 0.9rem;
+            color: #7f8c8d;
+        }
+
+        .install-instructions {
+            background: #2c3e50;
+            padding: 2rem;
+            border-radius: 8px;
+            margin-top: 2rem;
+        }
+
+        .install-instructions h3, .install-instructions h4 {
+            color: white;
+            margin-top: 1.5rem;
+        }
+
+        .install-instructions h3:first-child {
+            margin-top: 0;
+        }
+
+        .install-instructions ol, .install-instructions ul {
+            line-height: 1.8;
+            color: #ecf0f1;
+        }
+
+        .install-instructions code {
+            background: rgba(52, 73, 94, 0.5);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Monaco', 'Menlo', 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+
+        .active {
+            color: #3498db !important;
+            font-weight: 600;
+        }
+    </style>
+</body>
+</html>

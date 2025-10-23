@@ -1,0 +1,1372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentation - Pebble Language</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="public/pebble-icon.png">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <img src="public/pebble-icon.png" alt="Pebble Logo" class="logo">
+                <span class="brand-name">Pebble</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="documentation.html" class="active">Documentation</a></li>
+                <li><a href="cheatsheet.html">Cheatsheet</a></li>
+                <li><a href="download.html">Download</a></li>
+                <li><a href="architecture.html">Architecture</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="docs-container">
+        <aside class="sidebar">
+            <h3>Documentation</h3>
+            <ul class="sidebar-nav">
+                <li><a href="#basics">Language Basics</a></li>
+                <li><a href="#io">I/O Functions</a></li>
+                <li><a href="#type">Type Functions</a></li>
+                <li><a href="#array">Array Functions</a></li>
+                <li><a href="#map">Map Functions</a></li>
+                <li><a href="#string">String Functions</a></li>
+                <li><a href="#file">File Functions</a></li>
+                <li><a href="#json">JSON Functions</a></li>
+                <li><a href="#collision">Collision & Math</a></li>
+                <li><a href="#time">Time Functions</a></li>
+                <li><a href="#game-window">Game Window</a></li>
+                <li><a href="#game-draw">Game Drawing</a></li>
+                <li><a href="#game-input">Game Input</a></li>
+                <li><a href="#game-texture">Game Textures</a></li>
+                <li><a href="#game-audio">Game Audio</a></li>
+            </ul>
+        </aside>
+
+        <main class="docs-content">
+            <section id="basics" class="doc-section">
+                <h1>Pebble Documentation</h1>
+                <p class="intro">Pebble is a simple, fast scripting language with a clean syntax and powerful built-in functions.</p>
+
+                <h2>Language Basics</h2>
+                
+                <h3>Variables</h3>
+                <div class="code-block">
+                    <pre><code><span class="keyword">let</span> name = <span class="string">"Pebble"</span>
+<span class="keyword">let</span> version = <span class="number">1.0</span>
+<span class="keyword">let</span> active = <span class="keyword">true</span></code></pre>
+                </div>
+
+                <h3>Functions</h3>
+                <div class="code-block">
+                    <pre><code><span class="keyword">def</span> <span class="function">greet</span>(name):
+    <span class="keyword">return</span> <span class="string">"Hello, "</span> + name
+<span class="keyword">end</span>
+
+<span class="keyword">def</span> <span class="function">add</span>(a, b):
+    <span class="keyword">return</span> a + b
+<span class="keyword">end</span></code></pre>
+                </div>
+
+                <h3>Control Flow</h3>
+                <div class="code-block">
+                    <pre><code><span class="comment"># If statements</span>
+<span class="keyword">if</span> x &gt; <span class="number">10</span>:
+    <span class="function">io_print</span>(<span class="string">"Large"</span>)
+<span class="keyword">elif</span> x &gt; <span class="number">5</span>:
+    <span class="function">io_print</span>(<span class="string">"Medium"</span>)
+<span class="keyword">else</span>:
+    <span class="function">io_print</span>(<span class="string">"Small"</span>)
+<span class="keyword">end</span>
+
+<span class="comment"># While loops</span>
+<span class="keyword">let</span> i = <span class="number">0</span>
+<span class="keyword">while</span> i &lt; <span class="number">10</span>:
+    <span class="function">io_print</span>(i)
+    i = i + <span class="number">1</span>
+<span class="keyword">end</span></code></pre>
+                </div>
+
+                <h3>Comments</h3>
+                <div class="code-block">
+                    <pre><code><span class="comment"># Single-line comment</span>
+
+<span class="comment">## Documentation comment</span>
+<span class="comment">## Used for documenting functions and variables</span>
+<span class="keyword">def</span> <span class="function">important</span>():
+    <span class="comment"># Implementation here</span>
+<span class="keyword">end</span></code></pre>
+                </div>
+
+                <h3>Records</h3>
+                <p>Records are C-style structs that group related data together. They provide O(1) field access through compile-time index resolution.</p>
+                <div class="code-block">
+                    <pre><code><span class="keyword">record</span> <span class="type">Person</span>:
+    <span class="keyword">field</span> name
+    <span class="keyword">field</span> age
+<span class="keyword">end</span>
+
+<span class="comment"># Create a record instance</span>
+<span class="keyword">let</span> person: <span class="type">Person</span> = <span class="type">Person</span>
+person.name = <span class="string">"Alice"</span>
+person.age = <span class="number">30</span>
+
+<span class="function">io_print</span>(person.name)  <span class="comment"># Alice</span></code></pre>
+                </div>
+
+                <h4>Type Annotations for Records</h4>
+                <p><strong>Type annotations are required for record types</strong> in three situations:</p>
+                <ul>
+                    <li><strong>Variable declarations:</strong> When assigning a record to a variable</li>
+                    <li><strong>Function parameters:</strong> When a function parameter is a record type</li>
+                    <li><strong>Record fields:</strong> When a field contains another record (enables nested access)</li>
+                </ul>
+                <p>Type annotations tell the compiler which record type is being used, enabling compile-time field index resolution. This is <strong>only required for record types</strong> - other types (int, float, string, array, map) do not need annotations.</p>
+
+                <div class="code-block">
+                    <pre><code><span class="comment"># Variable with type annotation (required for records)</span>
+<span class="keyword">let</span> p: <span class="type">Point</span> = <span class="type">Point</span>
+p.x = <span class="number">10</span>
+p.y = <span class="number">20</span>
+
+<span class="comment"># Function with typed record parameter</span>
+<span class="keyword">def</span> <span class="function">calculate_distance</span>(p1: <span class="type">Point</span>, p2: <span class="type">Point</span>):
+    <span class="keyword">let</span> dx = p2.x - p1.x  <span class="comment"># Works because p2 is typed</span>
+    <span class="keyword">let</span> dy = p2.y - p1.y
+    <span class="keyword">return</span> dx * dx + dy * dy
+<span class="keyword">end</span></code></pre>
+                </div>
+
+                <h4>Nested Records</h4>
+                <p>For nested field access, the field must have a type annotation specifying which record type it contains:</p>
+                <div class="code-block">
+                    <pre><code><span class="keyword">record</span> <span class="type">Point</span>:
+    <span class="keyword">field</span> x
+    <span class="keyword">field</span> y
+<span class="keyword">end</span>
+
+<span class="keyword">record</span> <span class="type">Circle</span>:
+    <span class="keyword">field</span> center: <span class="type">Point</span>  <span class="comment"># Type annotation enables nested access</span>
+    <span class="keyword">field</span> radius
+<span class="keyword">end</span>
+
+<span class="keyword">let</span> circle: <span class="type">Circle</span> = <span class="type">Circle</span>
+<span class="keyword">let</span> p: <span class="type">Point</span> = <span class="type">Point</span>
+p.x = <span class="number">100</span>
+p.y = <span class="number">200</span>
+circle.center = p
+circle.radius = <span class="number">50</span>
+
+<span class="comment"># Nested access works because center is typed as Point</span>
+<span class="function">io_print</span>(circle.center.x)  <span class="comment"># 100</span>
+<span class="function">io_print</span>(circle.center.y)  <span class="comment"># 200</span></code></pre>
+                </div>
+
+                <h4>When Type Annotations Are NOT Needed</h4>
+                <p>Type annotations are <strong>only required for record types</strong>. You do not need them for:</p>
+                <ul>
+                    <li>Primitive types (int, float, string, bool, nil)</li>
+                    <li>Arrays</li>
+                    <li>Maps</li>
+                </ul>
+                <div class="code-block">
+                    <pre><code><span class="comment"># No type annotations needed (not records)</span>
+<span class="keyword">let</span> x = <span class="number">42</span>                <span class="comment"># int</span>
+<span class="keyword">let</span> name = <span class="string">"Alice"</span>        <span class="comment"># string</span>
+<span class="keyword">let</span> arr = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]        <span class="comment"># array</span>
+<span class="keyword">let</span> map = {<span class="string">"a"</span>: <span class="number">1</span>}        <span class="comment"># map</span>
+
+<span class="keyword">def</span> <span class="function">sum_array</span>(numbers):
+    <span class="comment"># No type annotation needed for array parameter</span>
+    <span class="keyword">let</span> total = <span class="number">0</span>
+    <span class="keyword">let</span> i = <span class="number">0</span>
+    <span class="keyword">while</span> i &lt; <span class="function">type_len</span>(numbers):
+        total = total + numbers[i]
+        i = i + <span class="number">1</span>
+    <span class="keyword">end</span>
+    <span class="keyword">return</span> total
+<span class="keyword">end</span></code></pre>
+                </div>
+
+                <h3>Imports</h3>
+                <div class="code-block">
+                    <pre><code><span class="keyword">import</span> <span class="string">"libs/math"</span>
+<span class="keyword">import</span> <span class="string">"utils/helpers"</span></code></pre>
+                </div>
+                <p style="margin-top: 1rem; color: #7f8c8d;"><strong>Note:</strong> The <code>.pbl</code> extension is automatically added by the compiler.</p>
+            </section>
+
+            <section id="io" class="doc-section">
+                <h2>I/O Functions</h2>
+                
+                <div class="function-doc">
+                    <h3><code>io_print(value, ...)</code></h3>
+                    <p>Prints values to standard output.</p>
+                    <div class="code-block">
+                        <pre><code><span class="function">io_print</span>(<span class="string">"Hello, World!"</span>)
+<span class="function">io_print</span>(<span class="string">"Value:"</span>, <span class="number">42</span>, <span class="string">"Result:"</span>, result)</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section id="type" class="doc-section">
+                <h2>Type Functions</h2>
+                
+                <div class="function-doc">
+                    <h3><code>typeof(value) -> string</code></h3>
+                    <p>Returns the type of a value as a string.</p>
+                    <div class="code-block">
+                        <pre><code><span class="function">io_print</span>(<span class="function">typeof</span>(<span class="number">42</span>))        <span class="comment"># "int"</span>
+<span class="function">io_print</span>(<span class="function">typeof</span>(<span class="number">3.14</span>))      <span class="comment"># "float"</span>
+<span class="function">io_print</span>(<span class="function">typeof</span>(<span class="string">"hello"</span>))   <span class="comment"># "string"</span>
+<span class="function">io_print</span>(<span class="function">typeof</span>([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]))  <span class="comment"># "array"</span>
+<span class="function">io_print</span>(<span class="function">typeof</span>({a: <span class="number">1</span>}))    <span class="comment"># "map"</span></code></pre>
+                    </div>
+                </div>
+
+                <div class="function-doc">
+                    <h3><code>type_int(value) -> int</code></h3>
+                    <p>Converts a value to an integer.</p>
+                    <div class="code-block">
+                        <pre><code><span class="function">io_print</span>(<span class="function">type_int</span>(<span class="number">3.14</span>))    <span class="comment"># 3</span>
+<span class="function">io_print</span>(<span class="function">type_int</span>(<span class="keyword">true</span>))     <span class="comment"># 1</span>
+<span class="function">io_print</span>(<span class="function">type_int</span>(<span class="keyword">false</span>))    <span class="comment"># 0</span></code></pre>
+                    </div>
+                </div>
+
+                <div class="function-doc">
+                    <h3><code>type_float(value) -> float</code></h3>
+                    <p>Converts a value to a floating-point number.</p>
+                    <div class="code-block">
+                        <pre><code><span class="function">io_print</span>(<span class="function">type_float</span>(<span class="number">42</span>))     <span class="comment"># 42.0</span>
+<span class="function">io_print</span>(<span class="function">type_float</span>(<span class="keyword">true</span>))   <span class="comment"># 1.0</span></code></pre>
+                    </div>
+                </div>
+
+                <div class="function-doc">
+                    <h3><code>type_str(value) -> string</code></h3>
+                    <p>Converts a value to a string.</p>
+                    <div class="code-block">
+                        <pre><code><span class="function">io_print</span>(<span class="function">type_str</span>(<span class="number">42</span>))        <span class="comment"># "42"</span>
+<span class="function">io_print</span>(<span class="function">type_str</span>(<span class="number">3.14</span>))      <span class="comment"># "3.14"</span>
+<span class="function">io_print</span>(<span class="function">type_str</span>(<span class="keyword">true</span>))      <span class="comment"># "true"</span></code></pre>
+                    </div>
+                </div>
+
+                <div class="function-doc">
+                    <h3><code>type_len(value) -> int</code></h3>
+                    <p>Returns the length of a string, array, or map.</p>
+                    <div class="code-block">
+                        <pre><code><span class="function">io_print</span>(<span class="function">type_len</span>(<span class="string">"hello"</span>))     <span class="comment"># 5</span>
+<span class="function">io_print</span>(<span class="function">type_len</span>([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]))   <span class="comment"># 3</span>
+<span class="function">io_print</span>(<span class="function">type_len</span>({a: <span class="number">1</span>, b: <span class="number">2</span>})) <span class="comment"># 2</span></code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section id="array" class="doc-section">
+                <h2>Array Functions</h2>
+                
+                <div class="function-doc">
+                    <h3><code>array_push(array, value) -> nil</code></h3>
+                    <p>Appends a value to the end of an array.</p>
+                    <div class="code-block">
+                        <pre><code><span class="keyword">let</span> arr = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]
+<span class="function">array_push</span>(arr, <span class="number">4</span>)
+<span class="function">io_print</span>(arr)  <span class="comment"># [1, 2, 3, 4]</span></code></pre>
+                    </div>
+                </div>
+
+                <div class="function-doc">
+                    <h3><code>array_pop(array) -> value</code></h3>
+                    <p>Removes and returns the last element from an array.</p>
+                    <div class="code-block">
+                        <pre><code><span class="keyword">let</span> arr = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]
+<span class="keyword">let</span> last = <span class="function">array_pop</span>(arr)
+<span class="function">io_print</span>(last)  <span class="comment"># 3</span>
+<span class="function">io_print</span>(arr)   <span class="comment"># [1, 2]</span></code></pre>
+                    </div>
+                </div>
+
+                <div class="function-doc">
+                    <h3><code>array_slice(array, start, end) -> array</code></h3>
+                    <p>Returns a new array containing elements from start to end (exclusive). Supports negative indices.</p>
+                    <div class="code-block">
+                        <pre><code><span class="keyword">let</span> arr = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>]
+<span class="function">io_print</span>(<span class="function">array_slice</span>(arr, <span class="number">1</span>, <span class="number">4</span>))    <span class="comment"># [2, 3, 4]</span>
+<span class="function">io_print</span>(<span class="function">array_slice</span>(arr, <span class="number">0</span>, -<span class="number">1</span>))   <span class="comment"># [1, 2, 3, 4]</span>
+<span class="function">io_print</span>(<span class="function">array_slice</span>(arr, -<span class="number">3</span>, -<span class="number">1</span>))  <span class="comment"># [3, 4]</span></code></pre>
+                    </div>
+                </div>
+
+                <div class="function-doc">
+                    <h3><code>array_append(array1, array2) -> array</code></h3>
+                    <p>Returns a new array with all elements from array2 appended to array1.</p>
+                    <div class="code-block">
+                        <pre><code><span class="keyword">let</span> a = [<span class="number">1</span>, <span class="number">2</span>]
+<span class="keyword">let</span> b = [<span class="number">3</span>, <span class="number">4</span>]
+<span class="keyword">let</span> c = <span class="function">array_append</span>(a, b)
+<span class="function">io_print</span>(c)  <span class="comment"># [1, 2, 3, 4]</span></code></pre>
+                    </div>
+                </div>
+
+                <div class="function-doc">
+                    <h3><code>array_insert(array, index, value) -> nil</code></h3>
+                    <p>Inserts a value at the specified index in an array.</p>
+                    <div class="code-block">
+                        <pre><code><span class="keyword">let</span> arr = [<span class="number">1</span>, <span class="number">3</span>, <span class="number">4</span>]
+<span class="function">array_insert</span>(arr, <span class="number">1</span>, <span class="number">2</span>)
+<span class="function">io_print</span>(arr)  <span class="comment"># [1, 2, 3, 4]</span></code></pre>
+                    </div>
+                </div>
+
+                <div class="function-doc">
+                    <h3><code>array_remove(array, index) -> value</code></h3>
+                    <p>Removes and returns the element at the specified index.</p>
+                    <div class="code-block">
+                        <pre><code><span class="keyword">let</span> arr = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>]
+<span class="keyword">let</span> removed = <span class="function">array_remove</span>(arr, <span class="number">1</span>)
+<span class="function">io_print</span>(removed)  <span class="comment"># 2</span>
+<span class="function">io_print</span>(arr)      <span class="comment"># [1, 3, 4]</span></code></pre>
+                    </div>
+                </div>
+
+                <div class="function-doc">
+                    <h3><code>array_reverse(array) -> nil</code></h3>
+                    <p>Reverses the elements of an array in place.</p>
+                    <div class="code-block">
+                        <pre><code><span class="keyword">let</span> arr = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>]
+<span class="function">array_reverse</span>(arr)
+<span class="function">io_print</span>(arr)  <span class="comment"># [4, 3, 2, 1]</span></code></pre>
+                    </div>
+                </div>
+
+                <div class="function-doc">
+                    <h3><code>array_clear(array) -> nil</code></h3>
+                    <p>Removes all elements from an array.</p>
+                    <div class="code-block">
+                        <pre><code><span class="keyword">let</span> arr = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]
+<span class="function">array_clear</span>(arr)
+<span class="function">io_print</span>(arr)  <span class="comment"># []</span></code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section id="map" class="doc-section">
+                <h2>Map Functions</h2>
+                
+                <div class="function-doc">
+                    <h3><code>map_keys(map) -> array</code></h3>
+                    <p>Returns an array of all keys in a map.</p>
+                    <div class="code-block">
+                        <pre><code><span class="keyword">let</span> person = {name: <span class="string">"Alice"</span>, age: <span class="number">30</span>}
+<span class="keyword">let</span> k = <span class="function">map_keys</span>(person)
+<span class="function">io_print</span>(k)  <span class="comment"># ["name", "age"]</span></code></pre>
+                    </div>
+                </div>
+
+                <div class="function-doc">
+                    <h3><code>map_values(map) -> array</code></h3>
+                    <p>Returns an array of all values in a map.</p>
+                    <div class="code-block">
+                        <pre><code><span class="keyword">let</span> person = {name: <span class="string">"Alice"</span>, age: <span class="number">30</span>}
+<span class="keyword">let</span> v = <span class="function">map_values</span>(person)
+<span class="function">io_print</span>(v)  <span class="comment"># ["Alice", 30]</span></code></pre>
+                    </div>
+                </div>
+
+                <div class="function-doc">
+                    <h3><code>map_has_key(map, key) -> bool</code></h3>
+                    <p>Checks if a map contains a specific key.</p>
+                    <div class="code-block">
+                        <pre><code><span class="keyword">let</span> person = {name: <span class="string">"Alice"</span>, age: <span class="number">30</span>}
+<span class="function">io_print</span>(<span class="function">map_has_key</span>(person, <span class="string">"name"</span>))   <span class="comment"># true</span>
+<span class="function">io_print</span>(<span class="function">map_has_key</span>(person, <span class="string">"email"</span>))  <span class="comment"># false</span></code></pre>
+                    </div>
+                </div>
+
+                <div class="function-doc">
+                    <h3><code>map_delete(map, key) -> nil</code></h3>
+                    <p>Removes a key-value pair from a map.</p>
+                    <div class="code-block">
+                        <pre><code><span class="keyword">let</span> person = {name: <span class="string">"Alice"</span>, age: <span class="number">30</span>, city: <span class="string">"NYC"</span>}
+<span class="function">map_delete</span>(person, <span class="string">"city"</span>)
+<span class="function">io_print</span>(person)  <span class="comment"># {name: "Alice", age: 30}</span></code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section id="string" class="doc-section">
+                <h2>String Functions</h2>
+                
+                <div class="function-doc">
+                    <h3><code>string_upper(str) -> string</code></h3>
+                    <p>Converts a string to uppercase.</p>
+                    <div class="code-block">
+                        <pre><code><span class="keyword">let</span> s = <span class="function">string_upper</span>(<span class="string">"hello"</span>)
+<span class="function">io_print</span>(s)  <span class="comment"># "HELLO"</span></code></pre>
+                    </div>
+                </div>
+
+                <div class="function-doc">
+                    <h3><code>string_lower(str) -> string</code></h3>
+                    <p>Converts a string to lowercase.</p>
+                    <div class="code-block">
+                        <pre><code><span class="keyword">let</span> s = <span class="function">string_lower</span>(<span class="string">"WORLD"</span>)
+<span class="function">io_print</span>(s)  <span class="comment"># "world"</span></code></pre>
+                    </div>
+                </div>
+
+                <div class="function-doc">
+                    <h3><code>string_trim(str) -> string</code></h3>
+                    <p>Removes whitespace from both ends of a string.</p>
+                    <div class="code-block">
+                        <pre><code><span class="keyword">let</span> s = <span class="function">string_trim</span>(<span class="string">"  hello  "</span>)
+<span class="function">io_print</span>(s)  <span class="comment"># "hello"</span></code></pre>
+                    </div>
+                </div>
+
+                <div class="function-doc">
+                    <h3><code>string_trim_prefix(str, prefix) -> string</code></h3>
+                    <p>Removes prefix from string if present.</p>
+                    <div class="code-block">
+                        <pre><code><span class="keyword">let</span> s = <span class="function">string_trim_prefix</span>(<span class="string">"hello_world"</span>, <span class="string">"hello_"</span>)
+<span class="function">io_print</span>(s)  <span class="comment"># "world"</span></code></pre>
+                    </div>
+                </div>
+
+                <div class="function-doc">
+                    <h3><code>string_trim_suffix(str, suffix) -> string</code></h3>
+                    <p>Removes suffix from string if present.</p>
+                    <div class="code-block">
+                        <pre><code><span class="keyword">let</span> s = <span class="function">string_trim_suffix</span>(<span class="string">"file.txt"</span>, <span class="string">".txt"</span>)
+<span class="function">io_print</span>(s)  <span class="comment"># "file"</span></code></pre>
+                    </div>
+                </div>
+
+                <div class="function-doc">
+                    <h3><code>string_split(str, separator) -> array</code></h3>
+                    <p>Splits string by separator into array.</p>
+                    <div class="code-block">
+                        <pre><code><span class="keyword">let</span> parts = <span class="function">string_split</span>(<span class="string">"a,b,c"</span>, <span class="string">","</span>)
+<span class="function">io_print</span>(parts)  <span class="comment"># ["a", "b", "c"]</span></code></pre>
+                    </div>
+                </div>
+
+                <div class="function-doc">
+                    <h3><code>string_join(array, separator) -> string</code></h3>
+                    <p>Joins array of strings with separator.</p>
+                    <div class="code-block">
+                        <pre><code><span class="keyword">let</span> s = <span class="function">string_join</span>([<span class="string">"a"</span>, <span class="string">"b"</span>, <span class="string">"c"</span>], <span class="string">"-"</span>)
+<span class="function">io_print</span>(s)  <span class="comment"># "a-b-c"</span></code></pre>
+                    </div>
+                </div>
+
+                <div class="function-doc">
+                    <h3><code>string_replace(str, old, new) -> string</code></h3>
+                    <p>Replaces all occurrences of substring.</p>
+                    <div class="code-block">
+                        <pre><code><span class="keyword">let</span> s = <span class="function">string_replace</span>(<span class="string">"hello"</span>, <span class="string">"l"</span>, <span class="string">"r"</span>)
+<span class="function">io_print</span>(s)  <span class="comment"># "herro"</span></code></pre>
+                    </div>
+                </div>
+
+                <div class="function-doc">
+                    <h3><code>string_contains(str, substr) -> bool</code></h3>
+                    <p>Checks if string contains substring.</p>
+                    <div class="code-block">
+                        <pre><code><span class="function">io_print</span>(<span class="function">string_contains</span>(<span class="string">"hello"</span>, <span class="string">"ell"</span>))  <span class="comment"># true</span></code></pre>
+                    </div>
+                </div>
+
+                <div class="function-doc">
+                    <h3><code>string_starts_with(str, prefix) -> bool</code></h3>
+                    <p>Checks if string starts with prefix.</p>
+                    <div class="code-block">
+                        <pre><code><span class="function">io_print</span>(<span class="function">string_starts_with</span>(<span class="string">"hello"</span>, <span class="string">"hel"</span>))  <span class="comment"># true</span></code></pre>
+                    </div>
+                </div>
+
+                <div class="function-doc">
+                    <h3><code>string_ends_with(str, suffix) -> bool</code></h3>
+                    <p>Checks if string ends with suffix.</p>
+                    <div class="code-block">
+                        <pre><code><span class="function">io_print</span>(<span class="function">string_ends_with</span>(<span class="string">"hello"</span>, <span class="string">"lo"</span>))  <span class="comment"># true</span></code></pre>
+                    </div>
+                </div>
+
+                <div class="function-doc">
+                    <h3><code>string_index_of(str, substr) -> int</code></h3>
+                    <p>Finds first index of substring (-1 if not found).</p>
+                    <div class="code-block">
+                        <pre><code><span class="function">io_print</span>(<span class="function">string_index_of</span>(<span class="string">"hello"</span>, <span class="string">"l"</span>))  <span class="comment"># 2</span></code></pre>
+                    </div>
+                </div>
+
+                <div class="function-doc">
+                    <h3><code>string_last_index_of(str, substr) -> int</code></h3>
+                    <p>Finds last index of substring (-1 if not found).</p>
+                    <div class="code-block">
+                        <pre><code><span class="function">io_print</span>(<span class="function">string_last_index_of</span>(<span class="string">"hello"</span>, <span class="string">"l"</span>))  <span class="comment"># 3</span></code></pre>
+                    </div>
+                </div>
+
+                <div class="function-doc">
+                    <h3><code>string_substr(str, start, [end]) -> string</code></h3>
+                    <p>Gets substring from start index to end index. If end is omitted, goes to end of string.</p>
+                    <div class="code-block">
+                        <pre><code><span class="function">io_print</span>(<span class="function">string_substr</span>(<span class="string">"hello"</span>, <span class="number">1</span>, <span class="number">4</span>))  <span class="comment"># "ell"</span>
+<span class="function">io_print</span>(<span class="function">string_substr</span>(<span class="string">"hello"</span>, <span class="number">2</span>))     <span class="comment"># "llo"</span></code></pre>
+                    </div>
+                </div>
+
+                <div class="function-doc">
+                    <h3><code>string_repeat(str, count) -> string</code></h3>
+                    <p>Repeats string n times.</p>
+                    <div class="code-block">
+                        <pre><code><span class="keyword">let</span> s = <span class="function">string_repeat</span>(<span class="string">"ha"</span>, <span class="number">3</span>)
+<span class="function">io_print</span>(s)  <span class="comment"># "hahaha"</span></code></pre>
+                    </div>
+                </div>
+
+                <div class="function-doc">
+                    <h3><code>string_reverse(str) -> string</code></h3>
+                    <p>Reverses a string.</p>
+                    <div class="code-block">
+                        <pre><code><span class="keyword">let</span> s = <span class="function">string_reverse</span>(<span class="string">"hello"</span>)
+<span class="function">io_print</span>(s)  <span class="comment"># "olleh"</span></code></pre>
+                    </div>
+                </div>
+
+                <div class="function-doc">
+                    <h3><code>string_count(str, substr) -> int</code></h3>
+                    <p>Counts occurrences of substring.</p>
+                    <div class="code-block">
+                        <pre><code><span class="function">io_print</span>(<span class="function">string_count</span>(<span class="string">"hello"</span>, <span class="string">"l"</span>))  <span class="comment"># 2</span></code></pre>
+                    </div>
+                </div>
+
+                <div class="function-doc">
+                    <h3><code>string_pad_left(str, width, [pad_char]) -> string</code></h3>
+                    <p>Pads string on left to specified width. Optional third argument specifies pad character (default space).</p>
+                    <div class="code-block">
+                        <pre><code><span class="keyword">let</span> s = <span class="function">string_pad_left</span>(<span class="string">"5"</span>, <span class="number">3</span>, <span class="string">"0"</span>)
+<span class="function">io_print</span>(s)  <span class="comment"># "005"</span></code></pre>
+                    </div>
+                </div>
+
+                <div class="function-doc">
+                    <h3><code>string_pad_right(str, width, [pad_char]) -> string</code></h3>
+                    <p>Pads string on right to specified width. Optional third argument specifies pad character (default space).</p>
+                    <div class="code-block">
+                        <pre><code><span class="keyword">let</span> s = <span class="function">string_pad_right</span>(<span class="string">"hello"</span>, <span class="number">8</span>)
+<span class="function">io_print</span>(s)  <span class="comment"># "hello   "</span></code></pre>
+                    </div>
+                </div>
+
+                <div class="function-doc">
+                    <h3><code>string_parse_int(str) -> int or nil</code></h3>
+                    <p>Parses string to integer. Returns nil on failure.</p>
+                    <div class="code-block">
+                        <pre><code><span class="keyword">let</span> n = <span class="function">string_parse_int</span>(<span class="string">"42"</span>)
+<span class="function">io_print</span>(n)  <span class="comment"># 42</span></code></pre>
+                    </div>
+                </div>
+
+                <div class="function-doc">
+                    <h3><code>string_parse_float(str) -> float or nil</code></h3>
+                    <p>Parses string to float. Returns nil on failure.</p>
+                    <div class="code-block">
+                        <pre><code><span class="keyword">let</span> n = <span class="function">string_parse_float</span>(<span class="string">"3.14"</span>)
+<span class="function">io_print</span>(n)  <span class="comment"># 3.14</span></code></pre>
+                    </div>
+                </div>
+
+                <div class="function-doc">
+                    <h3><code>string_char_at(str, index) -> string or nil</code></h3>
+                    <p>Gets character at index. Returns nil if out of bounds.</p>
+                    <div class="code-block">
+                        <pre><code><span class="keyword">let</span> c = <span class="function">string_char_at</span>(<span class="string">"hello"</span>, <span class="number">1</span>)
+<span class="function">io_print</span>(c)  <span class="comment"># "e"</span></code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section id="file" class="doc-section">
+                <h2>File Functions</h2>
+                
+                <div class="function-doc">
+                    <h3><code>file_read_file(path) -> string or nil</code></h3>
+                    <p>Reads the entire contents of a file as a string. Returns nil if the file cannot be read.</p>
+                    <div class="code-block">
+                        <pre><code><span class="keyword">let</span> content = <span class="function">file_read_file</span>(<span class="string">"data.txt"</span>)
+<span class="keyword">if</span> content != <span class="keyword">nil</span>:
+    <span class="function">io_print</span>(content)
+<span class="keyword">end</span></code></pre>
+                    </div>
+                </div>
+
+                <div class="function-doc">
+                    <h3><code>file_write_file(path, content) -> bool</code></h3>
+                    <p>Writes a string to a file, overwriting existing content. Returns true on success, false on failure.</p>
+                    <div class="code-block">
+                        <pre><code><span class="keyword">let</span> success = <span class="function">file_write_file</span>(<span class="string">"output.txt"</span>, <span class="string">"Hello, World!"</span>)
+<span class="function">io_print</span>(<span class="string">"Written:"</span>, success)</code></pre>
+                    </div>
+                </div>
+
+                <div class="function-doc">
+                    <h3><code>file_append_file(path, content) -> bool</code></h3>
+                    <p>Appends a string to a file. Creates the file if it doesn't exist. Returns true on success, false on failure.</p>
+                    <div class="code-block">
+                        <pre><code><span class="function">file_append_file</span>(<span class="string">"log.txt"</span>, <span class="string">"New log entry\n"</span>)</code></pre>
+                    </div>
+                </div>
+
+                <div class="function-doc">
+                    <h3><code>file_exists(path) -> bool</code></h3>
+                    <p>Checks if a file exists.</p>
+                    <div class="code-block">
+                        <pre><code><span class="keyword">if</span> <span class="function">file_exists</span>(<span class="string">"config.txt"</span>):
+    <span class="keyword">let</span> config = <span class="function">file_read_file</span>(<span class="string">"config.txt"</span>)
+<span class="keyword">end</span></code></pre>
+                    </div>
+                </div>
+
+                <div class="function-doc">
+                    <h3><code>file_delete_file(path) -> bool</code></h3>
+                    <p>Deletes a file. Returns true on success, false on failure.</p>
+                    <div class="code-block">
+                        <pre><code><span class="function">file_delete_file</span>(<span class="string">"temp.txt"</span>)</code></pre>
+                    </div>
+                </div>
+
+                <div class="function-doc">
+                    <h3><code>file_read_lines(path) -> array or nil</code></h3>
+                    <p>Reads a file and returns an array of lines. Line endings (\n and \r\n) are removed. Returns nil if the file cannot be read.</p>
+                    <div class="code-block">
+                        <pre><code><span class="keyword">let</span> lines = <span class="function">file_read_lines</span>(<span class="string">"data.txt"</span>)
+<span class="keyword">if</span> lines != <span class="keyword">nil</span>:
+    <span class="keyword">for</span> line <span class="keyword">in</span> lines:
+        <span class="function">io_print</span>(line)
+    <span class="keyword">end</span>
+<span class="keyword">end</span></code></pre>
+                    </div>
+                </div>
+
+                <div class="function-doc">
+                    <h3><code>file_list_dir(path) -> array or nil</code></h3>
+                    <p>Lists all files and directories in a directory. Returns an array of filenames (strings). Returns nil if the directory cannot be read.</p>
+                    <div class="code-block">
+                        <pre><code><span class="keyword">let</span> files = <span class="function">file_list_dir</span>(<span class="string">"."</span>)
+<span class="keyword">if</span> files != <span class="keyword">nil</span>:
+    <span class="function">io_print</span>(<span class="string">"Files:"</span>, <span class="function">type_len</span>(files))
+<span class="keyword">end</span></code></pre>
+                    </div>
+                </div>
+
+                <div class="function-doc">
+                    <h3><code>file_is_dir(path) -> bool</code></h3>
+                    <p>Checks if a path is a directory. Returns false if the path doesn't exist.</p>
+                    <div class="code-block">
+                        <pre><code><span class="keyword">if</span> <span class="function">file_is_dir</span>(<span class="string">"src"</span>):
+    <span class="function">io_print</span>(<span class="string">"src is a directory"</span>)
+<span class="keyword">end</span></code></pre>
+                    </div>
+                </div>
+
+                <div class="function-doc">
+                    <h3><code>file_make_dir(path) -> bool</code></h3>
+                    <p>Creates a directory. Returns true on success, false on failure.</p>
+                    <div class="code-block">
+                        <pre><code><span class="function">file_make_dir</span>(<span class="string">"output"</span>)</code></pre>
+                    </div>
+                </div>
+
+                <div class="function-doc">
+                    <h3><code>file_make_dir_all(path) -> bool</code></h3>
+                    <p>Creates a directory and all parent directories (like mkdir -p). Returns true on success, false on failure.</p>
+                    <div class="code-block">
+                        <pre><code><span class="function">file_make_dir_all</span>(<span class="string">"path/to/deep/dir"</span>)</code></pre>
+                    </div>
+                </div>
+
+                <div class="function-doc">
+                    <h3><code>file_remove_dir(path) -> bool</code></h3>
+                    <p>Removes a directory (must be empty). Returns true on success, false on failure.</p>
+                    <div class="code-block">
+                        <pre><code><span class="function">file_remove_dir</span>(<span class="string">"temp_dir"</span>)</code></pre>
+                    </div>
+                </div>
+
+                <div class="function-doc">
+                    <h3><code>file_get_cwd() -> string or nil</code></h3>
+                    <p>Gets the current working directory. Returns nil on failure.</p>
+                    <div class="code-block">
+                        <pre><code><span class="keyword">let</span> cwd = <span class="function">file_get_cwd</span>()
+<span class="function">io_print</span>(<span class="string">"Current directory:"</span>, cwd)</code></pre>
+                    </div>
+                </div>
+
+                <div class="function-doc">
+                    <h3><code>file_set_cwd(path) -> bool</code></h3>
+                    <p>Sets the current working directory. Returns true on success, false on failure.</p>
+                    <div class="code-block">
+                        <pre><code><span class="function">file_set_cwd</span>(<span class="string">"/home/user/project"</span>)</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section id="json" class="doc-section">
+                <h2>JSON Functions</h2>
+                
+                <div class="function-doc">
+                    <h3><code>json_stringify(value) -> string</code></h3>
+                    <p>Converts a Pebble value to a JSON string.</p>
+                    <div class="code-block">
+                        <pre><code><span class="keyword">let</span> data = {name: <span class="string">"Alice"</span>, age: <span class="number">30</span>, active: <span class="keyword">true</span>}
+<span class="keyword">let</span> json_str = <span class="function">json_stringify</span>(data)
+<span class="function">io_print</span>(json_str)  <span class="comment"># {"name":"Alice","age":30,"active":true}</span></code></pre>
+                    </div>
+                </div>
+
+                <div class="function-doc">
+                    <h3><code>json_parse(json_string) -> value or nil</code></h3>
+                    <p>Parses a JSON string and returns a Pebble value. Returns nil if parsing fails.</p>
+                    <div class="code-block">
+                        <pre><code><span class="keyword">let</span> json_str = <span class="string">"{\"name\":\"Alice\",\"age\":30}"</span>
+<span class="keyword">let</span> data = <span class="function">json_parse</span>(json_str)
+<span class="keyword">if</span> data != <span class="keyword">nil</span>:
+    <span class="function">io_print</span>(data.name)  <span class="comment"># Alice</span>
+<span class="keyword">end</span></code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section id="collision" class="doc-section">
+                <h2>Collision Detection & Math</h2>
+                <p>Built-in functions for 2D game development and geometry calculations.</p>
+
+                <div class="function-doc">
+                    <h3><code>collision_point_in_rect(px, py, rx, ry, rw, rh) -> bool</code></h3>
+                    <p>Checks if a point is inside a rectangle.</p>
+                    <div class="code-block">
+                        <pre><code><span class="keyword">if</span> <span class="function">collision_point_in_rect</span>(mouse_x, mouse_y, <span class="number">100</span>, <span class="number">100</span>, <span class="number">50</span>, <span class="number">50</span>):
+    <span class="function">io_print</span>(<span class="string">"Clicked on button!"</span>)
+<span class="keyword">end</span></code></pre>
+                    </div>
+                </div>
+
+                <div class="function-doc">
+                    <h3><code>collision_point_in_circle(px, py, cx, cy, radius) -> bool</code></h3>
+                    <p>Checks if a point is inside a circle.</p>
+                    <div class="code-block">
+                        <pre><code><span class="keyword">if</span> <span class="function">collision_point_in_circle</span>(mouse_x, mouse_y, <span class="number">200</span>, <span class="number">200</span>, <span class="number">50</span>):
+    <span class="function">io_print</span>(<span class="string">"Hovering over circular button"</span>)
+<span class="keyword">end</span></code></pre>
+                    </div>
+                </div>
+
+                <div class="function-doc">
+                    <h3><code>collision_rect_rect(x1, y1, w1, h1, x2, y2, w2, h2) -> bool</code></h3>
+                    <p>Checks if two rectangles overlap using AABB (Axis-Aligned Bounding Box) collision detection.</p>
+                    <div class="code-block">
+                        <pre><code><span class="keyword">if</span> <span class="function">collision_rect_rect</span>(player_x, player_y, <span class="number">32</span>, <span class="number">32</span>, enemy_x, enemy_y, <span class="number">32</span>, <span class="number">32</span>):
+    <span class="function">io_print</span>(<span class="string">"Player hit enemy!"</span>)
+<span class="keyword">end</span></code></pre>
+                    </div>
+                </div>
+
+                <div class="function-doc">
+                    <h3><code>collision_circle_circle(x1, y1, r1, x2, y2, r2) -> bool</code></h3>
+                    <p>Checks if two circles overlap.</p>
+                    <div class="code-block">
+                        <pre><code><span class="keyword">if</span> <span class="function">collision_circle_circle</span>(ball1_x, ball1_y, <span class="number">10</span>, ball2_x, ball2_y, <span class="number">10</span>):
+    <span class="function">io_print</span>(<span class="string">"Balls collided!"</span>)
+<span class="keyword">end</span></code></pre>
+                    </div>
+                </div>
+
+                <div class="function-doc">
+                    <h3><code>collision_rect_circle(rx, ry, rw, rh, cx, cy, radius) -> bool</code></h3>
+                    <p>Checks if a rectangle and circle overlap.</p>
+                    <div class="code-block">
+                        <pre><code><span class="keyword">if</span> <span class="function">collision_rect_circle</span>(box_x, box_y, <span class="number">50</span>, <span class="number">50</span>, ball_x, ball_y, <span class="number">20</span>):
+    <span class="function">io_print</span>(<span class="string">"Ball hit box!"</span>)
+<span class="keyword">end</span></code></pre>
+                    </div>
+                </div>
+
+                <div class="function-doc">
+                    <h3><code>math_distance(x1, y1, x2, y2) -> float</code></h3>
+                    <p>Calculates the Euclidean distance between two points.</p>
+                    <div class="code-block">
+                        <pre><code><span class="keyword">let</span> dist = <span class="function">math_distance</span>(player_x, player_y, enemy_x, enemy_y)
+<span class="keyword">if</span> dist &lt; <span class="number">100</span>:
+    <span class="function">io_print</span>(<span class="string">"Enemy is nearby!"</span>)
+<span class="keyword">end</span></code></pre>
+                    </div>
+                </div>
+
+                <div class="function-doc">
+                    <h3><code>math_angle(x1, y1, x2, y2) -> float</code></h3>
+                    <p>Calculates the angle from point 1 to point 2 in radians (using atan2).</p>
+                    <div class="code-block">
+                        <pre><code><span class="keyword">let</span> angle = <span class="function">math_angle</span>(player_x, player_y, target_x, target_y)
+<span class="comment"># Use angle to rotate sprite or move towards target</span></code></pre>
+                    </div>
+                </div>
+
+                <div class="function-doc">
+                    <h3><code>math_lerp(start, end, t) -> float</code></h3>
+                    <p>Linear interpolation between two values. The parameter t is clamped to [0, 1].</p>
+                    <div class="code-block">
+                        <pre><code><span class="comment"># Smooth camera movement</span>
+camera_x = <span class="function">math_lerp</span>(camera_x, target_x, <span class="number">0.1</span>)
+
+<span class="comment"># Fade effect</span>
+alpha = <span class="function">math_lerp</span>(<span class="number">0</span>, <span class="number">255</span>, fade_progress)</code></pre>
+                    </div>
+                </div>
+
+                <div class="function-doc">
+                    <h3><code>math_normalize(x, y) -> array</code></h3>
+                    <p>Normalizes a 2D vector to unit length. Returns an array [nx, ny].</p>
+                    <div class="code-block">
+                        <pre><code><span class="keyword">let</span> dir = <span class="function">math_normalize</span>(dx, dy)
+velocity_x = dir[<span class="number">0</span>] * speed
+velocity_y = dir[<span class="number">1</span>] * speed</code></pre>
+                    </div>
+                </div>
+
+                <div class="function-doc">
+                    <h3><code>math_clamp(value, min, max) -> float</code></h3>
+                    <p>Clamps a value between minimum and maximum bounds.</p>
+                    <div class="code-block">
+                        <pre><code><span class="comment"># Keep player within screen bounds</span>
+player_x = <span class="function">math_clamp</span>(player_x, <span class="number">0</span>, screen_width)
+
+<span class="comment"># Limit health value</span>
+health = <span class="function">math_clamp</span>(health, <span class="number">0</span>, <span class="number">100</span>)</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section id="time" class="doc-section">
+                <h2>Time Functions</h2>
+                
+                <div class="function-doc">
+                    <h3><code>time_now() -> float</code></h3>
+                    <p>Returns the current Unix timestamp in seconds.</p>
+                    <div class="code-block">
+                        <pre><code><span class="keyword">let</span> start = <span class="function">time_now</span>()
+<span class="comment"># ... do some work ...</span>
+<span class="keyword">let</span> elapsed = <span class="function">time_now</span>() - start
+<span class="function">io_print</span>(<span class="string">"Elapsed:"</span>, elapsed, <span class="string">"seconds"</span>)</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section id="game-window" class="doc-section">
+                <h2>Game Window Functions</h2>
+                <p>Functions for creating and managing game windows.</p>
+
+                <div class="function-doc">
+                    <h3><code>window_create(width, height, title) -> nil</code></h3>
+                    <p>Creates a game window with the specified dimensions and title.</p>
+                    <div class="code-block">
+                        <pre><code><span class="function">window_create</span>(<span class="number">800</span>, <span class="number">600</span>, <span class="string">"My Game"</span>)</code></pre>
+                    </div>
+                </div>
+
+                <div class="function-doc">
+                    <h3><code>window_close() -> nil</code></h3>
+                    <p>Closes the game window.</p>
+                </div>
+
+                <div class="function-doc">
+                    <h3><code>window_should_close() -> bool</code></h3>
+                    <p>Returns true if the window should close (user pressed X button).</p>
+                    <div class="code-block">
+                        <pre><code><span class="keyword">while</span> <span class="keyword">not</span> <span class="function">window_should_close</span>():
+    <span class="comment"># Game loop</span>
+<span class="keyword">end</span></code></pre>
+                    </div>
+                </div>
+
+                <div class="function-doc">
+                    <h3><code>window_set_fps(fps) -> nil</code></h3>
+                    <p>Sets the target frames per second.</p>
+                    <div class="code-block">
+                        <pre><code><span class="function">window_set_fps</span>(<span class="number">60</span>)</code></pre>
+                    </div>
+                </div>
+
+                <div class="function-doc">
+                    <h3><code>window_set_title(title) -> nil</code></h3>
+                    <p>Changes the window title.</p>
+                    <div class="code-block">
+                        <pre><code><span class="function">window_set_title</span>(<span class="string">"Score: "</span> + <span class="function">type_str</span>(score))</code></pre>
+                    </div>
+                </div>
+
+                <div class="function-doc">
+                    <h3><code>window_set_resizable(resizable) -> nil</code></h3>
+                    <p>Sets whether the window can be resized.</p>
+                    <div class="code-block">
+                        <pre><code><span class="function">window_set_resizable</span>(<span class="keyword">false</span>)  <span class="comment"># Lock window size</span></code></pre>
+                    </div>
+                </div>
+
+                <div class="function-doc">
+                    <h3><code>window_set_fullscreen(fullscreen) -> nil</code></h3>
+                    <p>Enables or disables fullscreen mode.</p>
+                    <div class="code-block">
+                        <pre><code><span class="keyword">if</span> <span class="function">input_key_pressed</span>(<span class="string">"f11"</span>):
+    <span class="function">window_set_fullscreen</span>(<span class="keyword">true</span>)
+<span class="keyword">end</span></code></pre>
+                    </div>
+                </div>
+
+                <div class="function-doc">
+                    <h3><code>window_is_fullscreen() -> bool</code></h3>
+                    <p>Returns true if window is in fullscreen mode.</p>
+                    <div class="code-block">
+                        <pre><code><span class="keyword">if</span> <span class="function">window_is_fullscreen</span>():
+    <span class="function">io_print</span>(<span class="string">"Running in fullscreen mode"</span>)
+<span class="keyword">end</span></code></pre>
+                    </div>
+                </div>
+
+                <div class="function-doc">
+                    <h3><code>window_get_width() -> int</code></h3>
+                    <p>Returns the current window width in pixels.</p>
+                    <div class="code-block">
+                        <pre><code><span class="keyword">let</span> center_x = <span class="function">window_get_width</span>() / <span class="number">2</span></code></pre>
+                    </div>
+                </div>
+
+                <div class="function-doc">
+                    <h3><code>window_get_height() -> int</code></h3>
+                    <p>Returns the current window height in pixels.</p>
+                    <div class="code-block">
+                        <pre><code><span class="keyword">let</span> center_y = <span class="function">window_get_height</span>() / <span class="number">2</span></code></pre>
+                    </div>
+                </div>
+
+                <div class="function-doc">
+                    <h3><code>window_get_fps() -> int</code></h3>
+                    <p>Returns the current frames per second.</p>
+                    <div class="code-block">
+                        <pre><code><span class="function">draw_text</span>(<span class="string">"FPS: "</span> + <span class="function">type_str</span>(<span class="function">window_get_fps</span>()), <span class="number">10</span>, <span class="number">10</span>, <span class="number">20</span>, <span class="number">255</span>, <span class="number">255</span>, <span class="number">255</span>)</code></pre>
+                    </div>
+                </div>
+
+                <div class="function-doc">
+                    <h3><code>window_get_time() -> float</code></h3>
+                    <p>Returns the time elapsed since window creation in seconds.</p>
+                    <div class="code-block">
+                        <pre><code><span class="keyword">let</span> wave = <span class="function">math_sin</span>(<span class="function">window_get_time</span>() * <span class="number">2</span>)  <span class="comment"># Oscillating value</span></code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section id="game-draw" class="doc-section">
+                <h2>Game Drawing Functions</h2>
+                <p>Functions for drawing shapes, text, and graphics.</p>
+
+                <div class="function-doc">
+                    <h3><code>draw_begin() -> nil</code></h3>
+                    <p>Begins drawing mode. Call before drawing operations.</p>
+                    <div class="code-block">
+                        <pre><code><span class="keyword">while</span> <span class="keyword">not</span> <span class="function">window_should_close</span>():</code></pre>
+    <span class="function">draw_begin</span>()
+    <span class="function">draw_clear</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>)
+    <span class="comment"># ... drawing code here ...</span>
+    <span class="function">draw_end</span>()
+<span class="keyword">end</span></code></pre>
+                    </div>
+                </div>
+
+                <div class="function-doc">
+                    <h3><code>draw_end() -> nil</code></h3>
+                    <p>Ends drawing mode and presents the frame.</p>
+                </div>
+
+                <div class="function-doc">
+                    <h3><code>draw_clear(r, g, b) -> nil</code></h3>
+                    <p>Clears the screen with the specified RGB color (0-255).</p>
+                    <div class="code-block">
+                        <pre><code><span class="function">draw_clear</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>)  <span class="comment"># Black background</span></code></pre>
+                    </div>
+                </div>
+
+                <div class="function-doc">
+                    <h3><code>draw_circle(x, y, radius, r, g, b) -> nil</code></h3>
+                    <p>Draws a filled circle.</p>
+                    <div class="code-block">
+                        <pre><code><span class="function">draw_circle</span>(<span class="number">400</span>, <span class="number">300</span>, <span class="number">50</span>, <span class="number">255</span>, <span class="number">0</span>, <span class="number">0</span>)  <span class="comment"># Red circle</span></code></pre>
+                    </div>
+                </div>
+
+                <div class="function-doc">
+                    <h3><code>draw_circle_outline(x, y, radius, r, g, b) -> nil</code></h3>
+                    <p>Draws a circle outline.</p>
+                    <div class="code-block">
+                        <pre><code><span class="function">draw_circle_outline</span>(<span class="number">200</span>, <span class="number">200</span>, <span class="number">30</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">255</span>)  <span class="comment"># Blue ring</span></code></pre>
+                    </div>
+                </div>
+
+                <div class="function-doc">
+                    <h3><code>draw_rectangle(x, y, width, height, r, g, b) -> nil</code></h3>
+                    <p>Draws a filled rectangle.</p>
+                    <div class="code-block">
+                        <pre><code><span class="function">draw_rectangle</span>(<span class="number">100</span>, <span class="number">100</span>, <span class="number">200</span>, <span class="number">150</span>, <span class="number">0</span>, <span class="number">255</span>, <span class="number">0</span>)  <span class="comment"># Green box</span></code></pre>
+                    </div>
+                </div>
+
+                <div class="function-doc">
+                    <h3><code>draw_rectangle_outline(x, y, width, height, r, g, b) -> nil</code></h3>
+                    <p>Draws a rectangle outline.</p>
+                    <div class="code-block">
+                        <pre><code><span class="function">draw_rectangle_outline</span>(<span class="number">50</span>, <span class="number">50</span>, <span class="number">100</span>, <span class="number">80</span>, <span class="number">255</span>, <span class="number">255</span>, <span class="number">0</span>)  <span class="comment"># Yellow border</span></code></pre>
+                    </div>
+                </div>
+
+                <div class="function-doc">
+                    <h3><code>draw_line(x1, y1, x2, y2, thickness, r, g, b) -> nil</code></h3>
+                    <p>Draws a line between two points.</p>
+                    <div class="code-block">
+                        <pre><code><span class="function">draw_line</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">800</span>, <span class="number">600</span>, <span class="number">2</span>, <span class="number">255</span>, <span class="number">255</span>, <span class="number">255</span>)  <span class="comment"># White diagonal</span></code></pre>
+                    </div>
+                </div>
+
+                <div class="function-doc">
+                    <h3><code>draw_text(text, x, y, size, r, g, b) -> nil</code></h3>
+                    <p>Draws text on screen.</p>
+                    <div class="code-block">
+                        <pre><code><span class="function">draw_text</span>(<span class="string">"Score: 100"</span>, <span class="number">10</span>, <span class="number">10</span>, <span class="number">20</span>, <span class="number">255</span>, <span class="number">255</span>, <span class="number">255</span>)</code></pre>
+                    </div>
+                </div>
+
+                <div class="function-doc">
+                    <h3><code>draw_pixel(x, y, r, g, b) -> nil</code></h3>
+                    <p>Draws a single pixel.</p>
+                    <div class="code-block">
+                        <pre><code><span class="comment"># Create starfield effect</span>
+<span class="keyword">let</span> i = <span class="number">0</span>
+<span class="keyword">while</span> i &lt; <span class="number">100</span>:
+    <span class="function">draw_pixel</span>(rand_x, rand_y, <span class="number">255</span>, <span class="number">255</span>, <span class="number">255</span>)
+    i = i + <span class="number">1</span>
+<span class="keyword">end</span></code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section id="game-input" class="doc-section">
+                <h2>Game Input Functions</h2>
+                <p>Functions for handling keyboard and mouse input.</p>
+
+                <div class="function-doc">
+                    <h3><code>input_key_pressed(key) -> bool</code></h3>
+                    <p>Returns true if the key was just pressed this frame.</p>
+                    <div class="code-block">
+                        <pre><code><span class="keyword">if</span> <span class="function">input_key_pressed</span>(<span class="string">"space"</span>):
+    <span class="comment"># Player jumped</span>
+<span class="keyword">end</span></code></pre>
+                    </div>
+                </div>
+
+                <div class="function-doc">
+                    <h3><code>input_key_down(key) -> bool</code></h3>
+                    <p>Returns true while the key is being held down.</p>
+                    <div class="code-block">
+                        <pre><code><span class="keyword">if</span> <span class="function">input_key_down</span>(<span class="string">"right"</span>):
+    player_x = player_x + speed
+<span class="keyword">end</span></code></pre>
+                    </div>
+                </div>
+
+                <div class="function-doc">
+                    <h3><code>input_key_released(key) -> bool</code></h3>
+                    <p>Returns true if the key was just released this frame.</p>
+                    <div class="code-block">
+                        <pre><code><span class="keyword">if</span> <span class="function">input_key_released</span>(<span class="string">"space"</span>):
+    <span class="comment"># Player stopped charging attack</span>
+<span class="keyword">end</span></code></pre>
+                    </div>
+                </div>
+
+                <div class="function-doc">
+                    <h3><code>input_mouse_x() -> int</code></h3>
+                    <p>Returns the current mouse X position.</p>
+                    <div class="code-block">
+                        <pre><code><span class="keyword">let</span> mx = <span class="function">input_mouse_x</span>()
+<span class="keyword">let</span> my = <span class="function">input_mouse_y</span>()
+<span class="function">draw_circle</span>(mx, my, <span class="number">5</span>, <span class="number">255</span>, <span class="number">0</span>, <span class="number">0</span>)  <span class="comment"># Draw crosshair</span></code></pre>
+                    </div>
+                </div>
+
+                <div class="function-doc">
+                    <h3><code>input_mouse_y() -> int</code></h3>
+                    <p>Returns the current mouse Y position.</p>
+                </div>
+
+                <div class="function-doc">
+                    <h3><code>input_mouse_pressed(button) -> bool</code></h3>
+                    <p>Returns true if mouse button was just pressed. Button: 0=left, 1=right, 2=middle.</p>
+                    <div class="code-block">
+                        <pre><code><span class="keyword">if</span> <span class="function">input_mouse_pressed</span>(<span class="number">0</span>):
+    <span class="comment"># Left click detected</span>
+<span class="keyword">end</span></code></pre>
+                    </div>
+                </div>
+
+                <div class="function-doc">
+                    <h3><code>input_mouse_down(button) -> bool</code></h3>
+                    <p>Returns true while mouse button is being held.</p>
+                    <div class="code-block">
+                        <pre><code><span class="keyword">if</span> <span class="function">input_mouse_down</span>(<span class="number">0</span>):
+    <span class="comment"># Continuous shooting while held</span>
+    <span class="function">spawn_bullet</span>()
+<span class="keyword">end</span></code></pre>
+                    </div>
+                </div>
+
+                <div class="function-doc">
+                    <h3><code>input_mouse_released(button) -> bool</code></h3>
+                    <p>Returns true if mouse button was just released.</p>
+                    <div class="code-block">
+                        <pre><code><span class="keyword">if</span> <span class="function">input_mouse_released</span>(<span class="number">1</span>):
+    <span class="comment"># Right click released</span>
+<span class="keyword">end</span></code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section id="game-texture" class="doc-section">
+                <h2>Game Texture Functions</h2>
+                <p>Functions for loading and drawing textures/images.</p>
+
+                <div class="function-doc">
+                    <h3><code>texture_load(filepath) -> texture or nil</code></h3>
+                    <p>Loads a texture from file. Returns texture object or nil on failure.</p>
+                    <div class="code-block">
+                        <pre><code><span class="keyword">let</span> player_sprite = <span class="function">texture_load</span>(<span class="string">"player.png"</span>)
+<span class="keyword">if</span> player_sprite == <span class="keyword">nil</span>:
+    <span class="function">io_print</span>(<span class="string">"Failed to load texture!"</span>)
+<span class="keyword">end</span></code></pre>
+                    </div>
+                </div>
+
+                <div class="function-doc">
+                    <h3><code>texture_unload(texture) -> nil</code></h3>
+                    <p>Frees a loaded texture from memory.</p>
+                    <div class="code-block">
+                        <pre><code><span class="function">texture_unload</span>(player_sprite)  <span class="comment"># Clean up when done</span></code></pre>
+                    </div>
+                </div>
+
+                <div class="function-doc">
+                    <h3><code>texture_draw(texture, x, y) -> nil</code></h3>
+                    <p>Draws a texture at the specified position.</p>
+                    <div class="code-block">
+                        <pre><code><span class="function">texture_draw</span>(player_sprite, player_x, player_y)</code></pre>
+                    </div>
+                </div>
+
+                <div class="function-doc">
+                    <h3><code>texture_draw_ex(texture, x, y, rotation, scale, flip_x, flip_y) -> nil</code></h3>
+                    <p>Draws a texture with advanced options. Rotation in degrees, scale multiplier, flip booleans.</p>
+                    <div class="code-block">
+                        <pre><code><span class="comment"># Draw rotated and scaled</span>
+<span class="function">texture_draw_ex</span>(sprite, x, y, <span class="number">45</span>, <span class="number">2.0</span>, <span class="keyword">false</span>, <span class="keyword">false</span>)</code></pre>
+                    </div>
+                </div>
+
+                <div class="function-doc">
+                    <h3><code>texture_get_width(texture) -> int</code></h3>
+                    <p>Returns the texture width in pixels.</p>
+                    <div class="code-block">
+                        <pre><code><span class="keyword">let</span> center_x = x - (<span class="function">texture_get_width</span>(sprite) / <span class="number">2</span>)</code></pre>
+                    </div>
+                </div>
+
+                <div class="function-doc">
+                    <h3><code>texture_get_height(texture) -> int</code></h3>
+                    <p>Returns the texture height in pixels.</p>
+                    <div class="code-block">
+                        <pre><code><span class="keyword">let</span> center_y = y - (<span class="function">texture_get_height</span>(sprite) / <span class="number">2</span>)</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section id="game-audio" class="doc-section">
+                <h2>Game Audio Functions</h2>
+                <p>Functions for playing sound effects and music.</p>
+
+                <div class="function-doc">
+                    <h3><code>audio_init() -> nil</code></h3>
+                    <p>Initializes the audio system. Call once at program start.</p>
+                    <div class="code-block">
+                        <pre><code><span class="function">audio_init</span>()  <span class="comment"># Initialize before loading sounds</span></code></pre>
+                    </div>
+                </div>
+
+                <div class="function-doc">
+                    <h3><code>audio_close() -> nil</code></h3>
+                    <p>Closes the audio system. Call at program end.</p>
+                    <div class="code-block">
+                        <pre><code><span class="function">audio_close</span>()  <span class="comment"># Clean up audio resources</span></code></pre>
+                    </div>
+                </div>
+
+                <div class="function-doc">
+                    <h3><code>sound_load(filepath) -> sound or nil</code></h3>
+                    <p>Loads a sound effect from file (WAV, MP3, OGG).</p>
+                    <div class="code-block">
+                        <pre><code><span class="keyword">let</span> jump_sound = <span class="function">sound_load</span>(<span class="string">"jump.wav"</span>)</code></pre>
+                    </div>
+                </div>
+
+                <div class="function-doc">
+                    <h3><code>sound_unload(sound) -> nil</code></h3>
+                    <p>Frees a loaded sound from memory.</p>
+                    <div class="code-block">
+                        <pre><code><span class="function">sound_unload</span>(jump_sound)</code></pre>
+                    </div>
+                </div>
+
+                <div class="function-doc">
+                    <h3><code>sound_play(sound) -> nil</code></h3>
+                    <p>Plays a sound effect.</p>
+                    <div class="code-block">
+                        <pre><code><span class="keyword">if</span> <span class="function">input_key_pressed</span>(<span class="string">"space"</span>):
+    <span class="function">sound_play</span>(jump_sound)
+<span class="keyword">end</span></code></pre>
+                    </div>
+                </div>
+
+                <div class="function-doc">
+                    <h3><code>sound_stop(sound) -> nil</code></h3>
+                    <p>Stops playing a sound.</p>
+                    <div class="code-block">
+                        <pre><code><span class="function">sound_stop</span>(alarm_sound)</code></pre>
+                    </div>
+                </div>
+
+                <div class="function-doc">
+                    <h3><code>sound_set_volume(sound, volume) -> nil</code></h3>
+                    <p>Sets sound volume (0.0 to 1.0).</p>
+                    <div class="code-block">
+                        <pre><code><span class="function">sound_set_volume</span>(explosion_sound, <span class="number">0.5</span>)  <span class="comment"># 50% volume</span></code></pre>
+                    </div>
+                </div>
+
+                <div class="function-doc">
+                    <h3><code>sound_is_playing(sound) -> bool</code></h3>
+                    <p>Returns true if the sound is currently playing.</p>
+                    <div class="code-block">
+                        <pre><code><span class="keyword">if</span> <span class="keyword">not</span> <span class="function">sound_is_playing</span>(footstep_sound):
+    <span class="function">sound_play</span>(footstep_sound)
+<span class="keyword">end</span></code></pre>
+                    </div>
+                </div>
+
+                <div class="function-doc">
+                    <h3><code>music_load(filepath) -> music or nil</code></h3>
+                    <p>Loads background music from file.</p>
+                    <div class="code-block">
+                        <pre><code><span class="keyword">let</span> bg_music = <span class="function">music_load</span>(<span class="string">"background.mp3"</span>)</code></pre>
+                    </div>
+                </div>
+
+                <div class="function-doc">
+                    <h3><code>music_unload(music) -> nil</code></h3>
+                    <p>Frees loaded music from memory.</p>
+                    <div class="code-block">
+                        <pre><code><span class="function">music_unload</span>(bg_music)</code></pre>
+                    </div>
+                </div>
+
+                <div class="function-doc">
+                    <h3><code>music_play(music) -> nil</code></h3>
+                    <p>Starts playing music (loops automatically).</p>
+                    <div class="code-block">
+                        <pre><code><span class="function">music_play</span>(bg_music)  <span class="comment"># Starts looping</span></code></pre>
+                    </div>
+                </div>
+
+                <div class="function-doc">
+                    <h3><code>music_stop(music) -> nil</code></h3>
+                    <p>Stops playing music.</p>
+                    <div class="code-block">
+                        <pre><code><span class="function">music_stop</span>(bg_music)</code></pre>
+                    </div>
+                </div>
+
+                <div class="function-doc">
+                    <h3><code>music_pause(music) -> nil</code></h3>
+                    <p>Pauses music playback.</p>
+                    <div class="code-block">
+                        <pre><code><span class="keyword">if</span> game_paused:
+    <span class="function">music_pause</span>(bg_music)
+<span class="keyword">end</span></code></pre>
+                    </div>
+                </div>
+
+                <div class="function-doc">
+                    <h3><code>music_resume(music) -> nil</code></h3>
+                    <p>Resumes paused music.</p>
+                    <div class="code-block">
+                        <pre><code><span class="keyword">if</span> !game_paused:
+    <span class="function">music_resume</span>(bg_music)
+<span class="keyword">end</span></code></pre>
+                    </div>
+                </div>
+
+                <div class="function-doc">
+                    <h3><code>music_set_volume(music, volume) -> nil</code></h3>
+                    <p>Sets music volume (0.0 to 1.0).</p>
+                    <div class="code-block">
+                        <pre><code><span class="function">music_set_volume</span>(bg_music, <span class="number">0.3</span>)  <span class="comment"># Quiet background music</span></code></pre>
+                    </div>
+                </div>
+
+                <div class="function-doc">
+                    <h3><code>music_is_playing(music) -> bool</code></h3>
+                    <p>Returns true if music is currently playing.</p>
+                    <div class="code-block">
+                        <pre><code><span class="keyword">if</span> <span class="function">music_is_playing</span>(bg_music):
+    <span class="function">io_print</span>(<span class="string">"Music is playing"</span>)
+<span class="keyword">end</span></code></pre>
+                    </div>
+                </div>
+
+                <div class="function-doc">
+                    <h3><code>music_update(music) -> nil</code></h3>
+                    <p>Updates music streaming. Call once per frame if using music.</p>
+                    <div class="code-block">
+                        <pre><code><span class="keyword">while</span> <span class="keyword">not</span> <span class="function">window_should_close</span>():
+    <span class="function">music_update</span>(bg_music)  <span class="comment"># Keep music streaming</span>
+    <span class="comment"># ... rest of game loop ...</span>
+<span class="keyword">end</span></code></pre>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Pebble Language. Fast, simple, powerful.</p>
+            <p>
+                <a href="index.html">Home</a>
+            </p>
+        </div>
+    </footer>
+</body>
+</html>

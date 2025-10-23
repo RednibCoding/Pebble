@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Syntax Cheatsheet - Pebble Language</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="public/pebble-icon.png">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <img src="public/pebble-icon.png" alt="Pebble Logo" class="logo">
+                <span class="brand-name">Pebble</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="documentation.html">Documentation</a></li>
+                <li><a href="cheatsheet.html" class="active">Cheatsheet</a></li>
+                <li><a href="download.html">Download</a></li>
+                <li><a href="architecture.html">Architecture</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="docs-container">
+        <aside class="sidebar">
+            <h3>Quick Reference</h3>
+            <ul class="sidebar-nav">
+                <li><a href="#comments">Comments</a></li>
+                <li><a href="#variables">Variables</a></li>
+                <li><a href="#operators">Operators</a></li>
+                <li><a href="#control-flow">Control Flow</a></li>
+                <li><a href="#functions">Functions</a></li>
+                <li><a href="#arrays">Arrays</a></li>
+                <li><a href="#maps">Maps</a></li>
+                <li><a href="#records">Records</a></li>
+                <li><a href="#strings">Strings</a></li>
+                <li><a href="#types">Type Operations</a></li>
+                <li><a href="#io">I/O</a></li>
+                <li><a href="#collision">Collision Detection</a></li>
+                <li><a href="#game">Game Development</a></li>
+                <li><a href="#json">JSON</a></li>
+                <li><a href="#imports">Imports</a></li>
+                <li><a href="#features">Key Features</a></li>
+            </ul>
+        </aside>
+
+        <main class="docs-content">
+            <section class="doc-section">
+                <h1>Pebble Syntax Cheatsheet</h1>
+                <p class="intro">A quick reference for Pebble's syntax and core features.</p>
+
+                <h2 id="comments">Comments</h2>
+                <div class="code-block">
+                    <pre><code><span class="comment"># Single-line comment</span>
+
+<span class="comment">## Documentation comment (used for hover info)</span></code></pre>
+                </div>
+
+                <h2 id="variables">Variables</h2>
+                <div class="code-block">
+                    <pre><code><span class="keyword">let</span> x = <span class="number">42</span>                    <span class="comment"># Immutable by default</span>
+<span class="keyword">let</span> name = <span class="string">"Alice"</span>
+<span class="keyword">let</span> pi = <span class="number">3.14159</span>
+<span class="keyword">let</span> flag = <span class="keyword">true</span>
+<span class="keyword">let</span> nothing = <span class="keyword">nil</span></code></pre>
+                </div>
+
+                <h2 id="operators">Operators</h2>
+                <div class="code-block">
+                    <pre><code><span class="comment"># Arithmetic</span>
++ - * / %
+
+<span class="comment"># Comparison</span>
+== != &lt; &gt; &lt;= &gt;=
+
+<span class="comment"># Logical</span>
+<span class="keyword">and</span> <span class="keyword">or</span> <span class="keyword">not</span>
+
+<span class="comment"># String concatenation</span>
+<span class="string">"Hello"</span> + <span class="string">" "</span> + <span class="string">"World"</span></code></pre>
+                </div>
+
+                <h2 id="control-flow">Control Flow</h2>
+                <div class="code-block">
+                    <pre><code><span class="comment"># If-else</span>
+<span class="keyword">if</span> condition:
+    <span class="comment"># code</span>
+<span class="keyword">elif</span> other_condition:
+    <span class="comment"># code</span>
+<span class="keyword">else</span>:
+    <span class="comment"># code</span>
+<span class="keyword">end</span>
+
+<span class="comment"># While loop</span>
+<span class="keyword">while</span> condition:
+    <span class="comment"># code</span>
+<span class="keyword">end</span></code></pre>
+                </div>
+
+                <h2 id="functions">Functions</h2>
+                <div class="code-block">
+                    <pre><code><span class="comment"># Basic function</span>
+<span class="keyword">def</span> <span class="function">greet</span>(name):
+    <span class="keyword">return</span> <span class="string">"Hello, "</span> + name
+<span class="keyword">end</span>
+
+<span class="comment"># Multiple parameters</span>
+<span class="keyword">def</span> <span class="function">add</span>(a, b):
+    <span class="keyword">return</span> a + b
+<span class="keyword">end</span>
+
+<span class="comment"># No return value</span>
+<span class="keyword">def</span> <span class="function">print_info</span>(msg):
+    <span class="function">io_print</span>(msg)
+<span class="keyword">end</span></code></pre>
+                </div>
+
+                <h2 id="arrays">Arrays</h2>
+                <div class="code-block">
+                    <pre><code><span class="comment"># Creation</span>
+<span class="keyword">let</span> numbers = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>]
+<span class="keyword">let</span> empty = []
+
+<span class="comment"># Multiline</span>
+<span class="keyword">let</span> items = [
+    <span class="string">"apple"</span>,
+    <span class="string">"banana"</span>,
+    <span class="string">"cherry"</span>,
+]
+
+<span class="comment"># Access and modification</span>
+numbers[<span class="number">0</span>]              <span class="comment"># Get first element</span>
+numbers[<span class="number">2</span>] = <span class="number">99</span>         <span class="comment"># Set element</span>
+
+<span class="comment"># Built-in functions</span>
+<span class="function">array_push</span>(arr, value)
+<span class="function">array_pop</span>(arr)
+<span class="function">array_insert</span>(arr, index, value)
+<span class="function">array_remove</span>(arr, index)
+<span class="function">type_len</span>(arr)           <span class="comment"># Get length</span></code></pre>
+                </div>
+
+                <h2 id="maps">Maps</h2>
+                <div class="code-block">
+                    <pre><code><span class="comment"># Creation</span>
+<span class="keyword">let</span> person = {
+    <span class="string">"name"</span>: <span class="string">"Alice"</span>,
+    <span class="string">"age"</span>: <span class="number">30</span>,
+    <span class="string">"city"</span>: <span class="string">"Berlin"</span>
+}
+
+<span class="keyword">let</span> empty = {}
+
+<span class="comment"># Access and modification</span>
+person[<span class="string">"name"</span>]          <span class="comment"># Get value</span>
+person[<span class="string">"age"</span>] = <span class="number">31</span>      <span class="comment"># Set value</span>
+person[<span class="string">"job"</span>] = <span class="string">"Dev"</span>   <span class="comment"># Add new key</span>
+
+<span class="comment"># Built-in functions</span>
+<span class="function">map_keys</span>(map)
+<span class="function">map_values</span>(map)
+<span class="function">map_has_key</span>(map, key)
+<span class="function">map_delete</span>(map, key)
+<span class="function">type_len</span>(map)           <span class="comment"># Get size</span></code></pre>
+                </div>
+
+                <h2 id="records">Records (Structs)</h2>
+                <div class="code-block">
+                    <pre><code><span class="comment"># Definition</span>
+<span class="keyword">record</span> <span class="type">Point</span>:
+    <span class="keyword">field</span> x
+    <span class="keyword">field</span> y
+<span class="keyword">end</span>
+
+<span class="comment"># Usage with type annotation (required for records)</span>
+<span class="keyword">let</span> p: <span class="type">Point</span> = <span class="type">Point</span>
+p.x = <span class="number">10</span>
+p.y = <span class="number">20</span>
+
+<span class="comment"># Nested records</span>
+<span class="keyword">record</span> <span class="type">Circle</span>:
+    <span class="keyword">field</span> center: <span class="type">Point</span>   <span class="comment"># Type annotation enables nested access</span>
+    <span class="keyword">field</span> radius
+<span class="keyword">end</span>
+
+<span class="keyword">let</span> c: <span class="type">Circle</span> = <span class="type">Circle</span>
+c.center = p
+c.radius = <span class="number">50</span>
+<span class="function">io_print</span>(c.center.x)      <span class="comment"># Nested access</span>
+
+<span class="comment"># Functions with record parameters</span>
+<span class="keyword">def</span> <span class="function">distance</span>(p1: <span class="type">Point</span>, p2: <span class="type">Point</span>):
+    <span class="keyword">let</span> dx = p2.x - p1.x
+    <span class="keyword">let</span> dy = p2.y - p1.y
+    <span class="keyword">return</span> dx * dx + dy * dy
+<span class="keyword">end</span></code></pre>
+                </div>
+
+                <h2 id="strings">Strings</h2>
+                <div class="code-block">
+                    <pre><code><span class="comment"># Creation</span>
+<span class="keyword">let</span> text = <span class="string">"Hello, World!"</span>
+<span class="keyword">let</span> multiline = <span class="string">"Line 1\nLine 2"</span>
+
+<span class="comment"># Built-in functions</span>
+<span class="function">type_len</span>(str)                           <span class="comment"># String length</span>
+<span class="function">string_char_at</span>(str, index)              <span class="comment"># Get character at index</span>
+<span class="function">string_substr</span>(str, start, end)          <span class="comment"># Substring (end optional)</span>
+<span class="function">string_index_of</span>(str, substr)            <span class="comment"># Find first occurrence (-1 if not found)</span>
+<span class="function">string_upper</span>(str)                       <span class="comment"># Convert to uppercase</span>
+<span class="function">string_lower</span>(str)                       <span class="comment"># Convert to lowercase</span>
+<span class="function">string_split</span>(str, delimiter)            <span class="comment"># Split into array</span>
+<span class="function">string_join</span>(arr, separator)             <span class="comment"># Join array into string</span>
+<span class="function">string_replace</span>(str, old, new)           <span class="comment"># Replace all occurrences</span>
+<span class="function">string_contains</span>(str, substr)            <span class="comment"># Check if contains substring</span>
+<span class="function">string_starts_with</span>(str, prefix)         <span class="comment"># Check if starts with prefix</span>
+<span class="function">string_ends_with</span>(str, suffix)           <span class="comment"># Check if ends with suffix</span></code></pre>
+                </div>
+
+                <h2 id="types">Type Checking & Conversion</h2>
+                <div class="code-block">
+                    <pre><code><span class="comment"># Type checking</span>
+<span class="function">typeof</span>(value)           <span class="comment"># Returns the type name: "int", "float", "string", etc.</span>
+<span class="function">type_len</span>(collection)    <span class="comment"># Length of array/map/string</span>
+
+<span class="comment"># Conversion</span>
+<span class="function">type_int</span>(value)         <span class="comment"># Convert to integer</span>
+<span class="function">type_float</span>(value)       <span class="comment"># Convert to float</span>
+<span class="function">type_str</span>(value)         <span class="comment"># Convert to string</span></code></pre>
+                </div>
+
+                <h2 id="io">I/O</h2>
+                <div class="code-block">
+                    <pre><code><span class="comment"># Console output</span>
+<span class="function">io_print</span>(<span class="string">"Hello"</span>)
+<span class="function">io_print</span>(<span class="string">"x ="</span>, x, <span class="string">"y ="</span>, y)
+
+<span class="comment"># File operations</span>
+<span class="function">file_read_file</span>(<span class="string">"path.txt"</span>)              <span class="comment"># Read entire file as string</span>
+<span class="function">file_write_file</span>(<span class="string">"path.txt"</span>, content)    <span class="comment"># Write to file (overwrite)</span>
+<span class="function">file_append_file</span>(<span class="string">"path.txt"</span>, content)   <span class="comment"># Append to file</span>
+<span class="function">file_exists</span>(<span class="string">"path.txt"</span>)                 <span class="comment"># Check if file exists</span>
+<span class="function">file_delete_file</span>(<span class="string">"path.txt"</span>)            <span class="comment"># Delete a file</span>
+<span class="function">file_read_lines</span>(<span class="string">"path.txt"</span>)             <span class="comment"># Read file as array of lines</span>
+
+<span class="comment"># Directory operations</span>
+<span class="function">file_list_dir</span>(<span class="string">"."</span>)                      <span class="comment"># List files in directory</span>
+<span class="function">file_is_dir</span>(<span class="string">"path"</span>)                     <span class="comment"># Check if path is directory</span>
+<span class="function">file_make_dir</span>(<span class="string">"newdir"</span>)                 <span class="comment"># Create directory</span>
+<span class="function">file_make_dir_all</span>(<span class="string">"path/to/dir"</span>)        <span class="comment"># Create nested directories</span>
+<span class="function">file_get_cwd</span>()                          <span class="comment"># Get current working directory</span></code></pre>
+                </div>
+
+                <h2 id="collision">Collision Detection</h2>
+                <div class="code-block">
+                    <pre><code><span class="comment"># Point-shape collision</span>
+<span class="function">collision_point_in_rect</span>(px, py, rx, ry, rw, rh)      <span class="comment"># Point in rectangle</span>
+<span class="function">collision_point_in_circle</span>(px, py, cx, cy, radius)    <span class="comment"># Point in circle</span>
+
+<span class="comment"># Shape-shape collision</span>
+<span class="function">collision_rect_rect</span>(x1, y1, w1, h1, x2, y2, w2, h2)  <span class="comment"># AABB rectangle collision</span>
+<span class="function">collision_circle_circle</span>(x1, y1, r1, x2, y2, r2)      <span class="comment"># Circle overlap</span>
+<span class="function">collision_rect_circle</span>(rx, ry, rw, rh, cx, cy, r)     <span class="comment"># Rectangle-circle collision</span>
+
+<span class="comment"># Math helpers</span>
+<span class="function">math_distance</span>(x1, y1, x2, y2)                        <span class="comment"># Distance between points</span>
+<span class="function">math_angle</span>(x1, y1, x2, y2)                           <span class="comment"># Angle in radians</span>
+<span class="function">math_lerp</span>(start, end, t)                             <span class="comment"># Linear interpolation</span>
+<span class="function">math_normalize</span>(x, y)                                 <span class="comment"># Returns [nx, ny] array</span>
+<span class="function">math_clamp</span>(value, min, max)                          <span class="comment"># Clamp to range</span></code></pre>
+                </div>
+
+                <h2 id="game">Game Development</h2>
+                <div class="code-block">
+                    <pre><code><span class="comment"># Window management</span>
+<span class="function">window_create</span>(width, height, title)
+<span class="function">window_should_close</span>()          <span class="comment"># Returns bool</span>
+<span class="function">window_set_fps</span>(fps)
+<span class="function">window_get_width</span>()
+<span class="function">window_get_height</span>()
+
+<span class="comment"># Drawing</span>
+<span class="function">draw_begin</span>()
+<span class="function">draw_clear</span>(r, g, b)
+<span class="function">draw_circle</span>(x, y, radius, r, g, b)
+<span class="function">draw_rectangle</span>(x, y, width, height, r, g, b)
+<span class="function">draw_line</span>(x1, y1, x2, y2, thickness, r, g, b)
+<span class="function">draw_text</span>(text, x, y, size, r, g, b)
+<span class="function">draw_end</span>()
+
+<span class="comment"># Input</span>
+<span class="function">input_key_pressed</span>(key)        <span class="comment"># Just pressed</span>
+<span class="function">input_key_down</span>(key)           <span class="comment"># Held down</span>
+<span class="function">input_mouse_x</span>()
+<span class="function">input_mouse_y</span>()
+<span class="function">input_mouse_pressed</span>(button)   <span class="comment"># 0=left, 1=right, 2=middle</span>
+
+<span class="comment"># Textures</span>
+<span class="keyword">let</span> sprite = <span class="function">texture_load</span>(<span class="string">"player.png"</span>)
+<span class="function">texture_draw</span>(sprite, x, y)
+<span class="function">texture_draw_ex</span>(sprite, x, y, rotation, scale, flip_x, flip_y)
+<span class="function">texture_get_width</span>(sprite)
+
+<span class="comment"># Audio</span>
+<span class="function">audio_init</span>()
+<span class="keyword">let</span> sound = <span class="function">sound_load</span>(<span class="string">"jump.wav"</span>)
+<span class="function">sound_play</span>(sound)
+<span class="function">sound_set_volume</span>(sound, <span class="number">0.8</span>)
+
+<span class="keyword">let</span> music = <span class="function">music_load</span>(<span class="string">"bg.mp3"</span>)
+<span class="function">music_play</span>(music)
+<span class="function">music_update</span>(music)           <span class="comment"># Call every frame</span></code></pre>
+                </div>
+
+                <h2 id="json">JSON</h2>
+                <div class="code-block">
+                    <pre><code><span class="comment"># Parse JSON string to Pebble value</span>
+<span class="keyword">let</span> data = <span class="function">json_parse</span>(<span class="string">'{"name": "Alice", "age": 30}'</span>)
+<span class="function">io_print</span>(data[<span class="string">"name"</span>])
+
+<span class="comment"># Convert Pebble value to JSON string</span>
+<span class="keyword">let</span> obj = {<span class="string">"x"</span>: <span class="number">10</span>, <span class="string">"y"</span>: <span class="number">20</span>}
+<span class="keyword">let</span> json_str = <span class="function">json_stringify</span>(obj)
+<span class="function">io_print</span>(json_str)      <span class="comment"># {"x": 10, "y": 20}</span></code></pre>
+                </div>
+
+                <h2 id="imports">Imports</h2>
+                <div class="code-block">
+                    <pre><code><span class="comment"># Import from same directory</span>
+<span class="keyword">import</span> <span class="string">"helper"</span>
+
+<span class="comment"># Import from subdirectory</span>
+<span class="keyword">import</span> <span class="string">"utils/math"</span>
+
+<span class="comment"># Import from parent directory</span>
+<span class="keyword">import</span> <span class="string">"../shared/config"</span>
+
+<span class="comment"># Use imported functions</span>
+<span class="keyword">let</span> result = <span class="function">helper_function</span>()</code></pre>
+                </div>
+
+                <h2 id="features">Key Features</h2>
+                <ul style="list-style: none; padding-left: 0;">
+                    <li>✓ <strong>No for loops</strong>: Use <code>while</code> loops with manual indexing</li>
+                    <li>✓ <strong>No closures</strong>: Functions cannot capture outer scope variables</li>
+                    <li>✓ <strong>Records need type annotations</strong>: Required for field access inference</li>
+                    <li>✓ <strong>String-only map keys</strong>: Maps use string keys only</li>
+                    <li>✓ <strong>O(1) operations</strong>: Arrays (index access), Maps (key lookup), Records (field access)</li>
+                    <li>✓ <strong>Garbage collected</strong>: Automatic memory management</li>
+                    <li>✓ <strong>Pass-by-value semantics</strong>: Collections are reference types</li>
+                </ul>
+
+                <h2>Complete Example</h2>
+                <div class="code-block">
+                    <pre><code><span class="comment">## Calculate distance between two points</span>
+<span class="keyword">record</span> <span class="type">Point</span>:
+    <span class="keyword">field</span> x
+    <span class="keyword">field</span> y
+<span class="keyword">end</span>
+
+<span class="keyword">def</span> <span class="function">distance</span>(p1: <span class="type">Point</span>, p2: <span class="type">Point</span>):
+    <span class="keyword">let</span> dx = p2.x - p1.x
+    <span class="keyword">let</span> dy = p2.y - p1.y
+    <span class="keyword">return</span> (dx * dx + dy * dy) ** <span class="number">0.5</span>
+<span class="keyword">end</span>
+
+<span class="keyword">let</span> a: <span class="type">Point</span> = <span class="type">Point</span>
+a.x = <span class="number">0</span>
+a.y = <span class="number">0</span>
+
+<span class="keyword">let</span> b: <span class="type">Point</span> = <span class="type">Point</span>
+b.x = <span class="number">3</span>
+b.y = <span class="number">4</span>
+
+<span class="keyword">let</span> dist = <span class="function">distance</span>(a, b)
+<span class="function">io_print</span>(<span class="string">"Distance:"</span>, dist)  <span class="comment"># Distance: 5</span></code></pre>
+                </div>
+
+                <div style="margin-top: 3rem; padding: 1.5rem; background-color: #ecf0f1; border-left: 4px solid #3498db; border-radius: 4px;">
+                    <p style="margin: 0; color: #2c3e50;"><strong>💡 Tip:</strong> For more detailed documentation and examples, visit the <a href="documentation.html">full documentation</a>.</p>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Pebble Language. Fast, simple, powerful.</p>
+            <p>
+                <a href="index.html">Home</a> |
+                <a href="documentation.html">Documentation</a> |
+                <a href="architecture.html">Architecture</a>
+            </p>
+        </div>
+    </footer>
+</body>
+</html>

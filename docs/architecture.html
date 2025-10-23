@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Architecture & Optimizations - Pebble Language</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="public/pebble-icon.png">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <img src="public/pebble-icon.png" alt="Pebble Logo" class="logo">
+                <span class="brand-name">Pebble</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="documentation.html">Documentation</a></li>
+                <li><a href="cheatsheet.html">Cheatsheet</a></li>
+                <li><a href="download.html">Download</a></li>
+                <li><a href="architecture.html" class="active">Architecture</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="docs-container">
+        <aside class="sidebar">
+            <h3>Architecture</h3>
+            <ul class="sidebar-nav">
+                <li><a href="#overview">Overview</a></li>
+                <li><a href="#bytecode">Bytecode Compilation</a></li>
+                <li><a href="#nan-tagging">NaN Tagging</a></li>
+                <li><a href="#strings">String Optimization</a></li>
+                <li><a href="#symbol-table">Symbol Table</a></li>
+                <li><a href="#memory">Memory Management</a></li>
+                <li><a href="#benchmarks">Performance Results</a></li>
+            </ul>
+        </aside>
+
+        <main class="docs-content">
+            <h1>Architecture & Optimizations</h1>
+            <p class="section-subtitle">Understanding how Pebble achieves exceptional performance</p>
+
+            <section id="overview" class="doc-section">
+                <h2>Virtual Machine Overview</h2>
+                <p>Pebble uses a hand-crafted bytecode-based virtual machine built from the ground up for performance. Similar to languages like Python and Lua, the execution pipeline consists of three main stages:</p>
+                
+                <div class="feature-card" style="margin: 1.5rem 0;">
+                    <h3>1. Lexical Analysis & Parsing</h3>
+                    <p>Source code is tokenized and parsed into an Abstract Syntax Tree (AST). The parser performs semantic analysis and type checking during this phase.</p>
+                </div>
+
+                <div class="feature-card" style="margin: 1.5rem 0;">
+                    <h3>2. Bytecode Compilation</h3>
+                    <p>The AST is compiled into compact bytecode instructions. The compiler performs constant folding and other optimizations at compile-time.</p>
+                </div>
+
+                <div class="feature-card" style="margin: 1.5rem 0;">
+                    <h3>3. Virtual Machine Execution</h3>
+                    <p>The bytecode is executed by a stack-based virtual machine with several performance optimizations.</p>
+                </div>
+            </section>
+
+            <section id="bytecode" class="doc-section">
+                <h2>Bytecode Compilation</h2>
+                <p>Pebble compiles source code to bytecode before execution, providing several advantages:</p>
+                
+                <ul style="line-height: 2;">
+                    <li><strong>Single-pass compilation:</strong> Fast compilation with minimal overhead</li>
+                    <li><strong>Compact representation:</strong> Bytecode is smaller than source code and faster to execute</li>
+                    <li><strong>Compile-time optimizations:</strong> Constant folding, dead code elimination</li>
+                    <li><strong>Fast local loads:</strong> Special opcodes for loading locals 0-7 without operands</li>
+                </ul>
+
+                <h3>Optimization: String Literal Folding</h3>
+                <p>When concatenating string literals at compile-time, the compiler folds them into a single constant:</p>
+                <pre style="background: #2c3e50; color: #ecf0f1; padding: 1rem; border-radius: 5px; margin: 1rem 0;"><code>let msg = "Hello, " + "World!"  <span style="color: #95a5a6;"># Compiled as single string "Hello, World!"</span></code></pre>
+            </section>
+
+            <section id="nan-tagging" class="doc-section">
+                <h2>NaN Tagging</h2>
+                <p>One of Pebble's most significant optimizations is <strong>NaN tagging</strong> - a technique that allows storing different value types in a single 64-bit word without heap allocation.</p>
+
+                <h3>How It Works</h3>
+                <p>IEEE 754 double-precision floating point numbers use 64 bits. Not all bit patterns represent valid numbers - some represent "NaN" (Not a Number). Pebble uses these NaN bit patterns to encode different types:</p>
+
+                <ul style="line-height: 2;">
+                    <li><strong>Doubles:</strong> Stored directly (non-NaN bit patterns)</li>
+                    <li><strong>Integers:</strong> Stored in NaN payload (up to 48 bits)</li>
+                    <li><strong>Booleans:</strong> Encoded in NaN with type tag</li>
+                    <li><strong>Nil:</strong> Special NaN pattern</li>
+                    <li><strong>Pointers:</strong> Object references stored in NaN payload</li>
+                </ul>
+
+                <h3>Performance Benefits</h3>
+                <ul style="line-height: 2;">
+                    <li><strong>Zero allocation for primitives:</strong> Numbers, bools, nil don't require heap memory</li>
+                    <li><strong>Fast type checking:</strong> Type can be determined with a few bit operations</li>
+                    <li><strong>Compact representation:</strong> All values fit in 64 bits (8 bytes)</li>
+                    <li><strong>Cache friendly:</strong> Values fit in CPU registers and cache lines</li>
+                </ul>
+
+                <p style="margin-top: 1.5rem; padding: 1rem; background: #ecf0f1; border-left: 4px solid #3498db; border-radius: 3px;">
+                    <strong>Real-world impact:</strong> NaN tagging eliminates millions of allocations in typical programs, reducing garbage collection pressure and improving cache locality.
+                </p>
+            </section>
+
+            <section id="strings" class="doc-section">
+                <h2>String Optimization</h2>
+                <p>Pebble employs several techniques to make string operations exceptionally fast:</p>
+
+                <h3>1. Lazy Hash Computation</h3>
+                <p>String hashes are only computed when a string is used as a map key, not on creation:</p>
+                <ul style="line-height: 2;">
+                    <li>String concatenation and creation: <strong>No hashing overhead</strong></li>
+                    <li>Map insertion/lookup: Hash computed once and cached</li>
+                    <li>Result: <strong>938x faster</strong> string concatenation vs. eager hashing</li>
+                </ul>
+
+                <h3>2. Reusable String Builder</h3>
+                <p>String concatenation uses a reusable buffer to avoid repeated allocations:</p>
+                <ul style="line-height: 2;">
+                    <li>Single builder allocated per VM instance</li>
+                    <li>Buffer grows as needed and maintains capacity</li>
+                    <li>Reset between operations (no reallocation)</li>
+                </ul>
+
+                <h3>3. String Interning for Literals</h3>
+                <p>String literals are interned at compile-time:</p>
+                <ul style="line-height: 2;">
+                    <li>Each unique string literal stored once</li>
+                    <li>Equality comparison: pointer comparison (O(1))</li>
+                    <li>Reduced memory footprint</li>
+                </ul>
+
+                <div style="margin-top: 1.5rem; padding: 1rem; background: #d5f4e6; border-left: 4px solid #50c878; border-radius: 3px;">
+                    <strong>Benchmark Result:</strong> String concatenation is 114x faster than Python and 40x faster than Lua thanks to these optimizations.
+                </div>
+            </section>
+
+            <section id="symbol-table" class="doc-section">
+                <h2>O(1) Symbol Lookup</h2>
+                <p>Pebble uses compile-time symbol resolution for blazing-fast variable access:</p>
+
+                <h3>Local Variables</h3>
+                <ul style="line-height: 2;">
+                    <li>Resolved to stack indices at compile-time</li>
+                    <li>Runtime access: single array lookup (O(1))</li>
+                    <li>No hash table lookups or string comparisons</li>
+                    <li>Special opcodes for accessing locals 0-7 (most common case)</li>
+                </ul>
+
+                <h3>Global Variables</h3>
+                <ul style="line-height: 2;">
+                    <li>Stored in a flat array with indices known at compile-time</li>
+                    <li>Access via direct array index (O(1))</li>
+                    <li>No runtime symbol table searches</li>
+                </ul>
+
+                <p style="margin-top: 1.5rem; padding: 1rem; background: #ecf0f1; border-left: 4px solid #3498db; border-radius: 3px;">
+                    <strong>Comparison:</strong> Many interpreted languages use hash tables for variable lookup (O(1) average, but with overhead). Pebble's compile-time resolution eliminates this overhead entirely.
+                </p>
+            </section>
+
+            <section id="memory" class="doc-section">
+                <h2>Memory Management</h2>
+                <p>Pebble uses a tri-color mark-and-sweep garbage collector - a simple yet effective approach:</p>
+
+                <h3>Heap-Allocated Objects</h3>
+                <ul style="line-height: 2;">
+                    <li><strong>Strings:</strong> Immutable, reference-counted implicitly through GC</li>
+                    <li><strong>Arrays:</strong> Dynamic arrays with automatic growth</li>
+                    <li><strong>Maps:</strong> Hash tables with linear probing</li>
+                    <li><strong>Records:</strong> Fixed-size structures with typed fields</li>
+                    <li><strong>Functions:</strong> Function objects with bytecode and metadata</li>
+                </ul>
+
+                <h3>Garbage Collection Strategy</h3>
+                <ul style="line-height: 2;">
+                    <li><strong>Mark phase:</strong> Trace reachable objects from stack and globals</li>
+                    <li><strong>Sweep phase:</strong> Free unmarked objects</li>
+                    <li><strong>Triggered:</strong> When memory pressure increases</li>
+                    <li><strong>Conservative:</strong> Keeps objects longer to reduce GC frequency</li>
+                </ul>
+
+                <h3>Array Growth Strategy</h3>
+                <p>Dynamic arrays double in capacity when full, minimizing reallocations:</p>
+                <ul style="line-height: 2;">
+                    <li>Amortized O(1) append operations</li>
+                    <li>Reduced memory allocation overhead</li>
+                    <li>Better cache locality with contiguous storage</li>
+                </ul>
+            </section>
+
+            <section id="benchmarks" class="doc-section">
+                <h2>Performance Results</h2>
+                <p>These optimizations combine to deliver exceptional real-world performance:</p>
+
+                <div style="background: #ecf0f1; padding: 1.5rem; border-radius: 8px; margin: 2rem 0;">
+                    <h3 style="margin-top: 0; color: #2c3e50;">String Concatenation (50K × 5 strings)</h3>
+                    <ul style="line-height: 2; margin-bottom: 0;">
+                        <li><strong>Pebble:</strong> 25-39ms</li>
+                        <li><strong>Python:</strong> 2858ms (114x slower)</li>
+                        <li><strong>Lua:</strong> 1020ms (40x slower)</li>
+                    </ul>
+                </div>
+
+                <div style="background: #ecf0f1; padding: 1.5rem; border-radius: 8px; margin: 2rem 0;">
+                    <h3 style="margin-top: 0; color: #2c3e50;">Array Operations (100K push/pop + 1K insert/remove)</h3>
+                    <ul style="line-height: 2; margin-bottom: 0;">
+                        <li><strong>Pebble:</strong> 38-45ms</li>
+                        <li><strong>Python:</strong> 39-46ms (≈ equal)</li>
+                        <li><strong>Lua:</strong> 874ms (22x slower)</li>
+                    </ul>
+                </div>
+
+                <div style="background: #ecf0f1; padding: 1.5rem; border-radius: 8px; margin: 2rem 0;">
+                    <h3 style="margin-top: 0; color: #2c3e50;">Binary Trees (depth 20, 2M+ allocations)</h3>
+                    <ul style="line-height: 2; margin-bottom: 0;">
+                        <li><strong>Pebble:</strong> 583ms</li>
+                        <li><strong>Python:</strong> 2633ms (4.5x slower)</li>
+                        <li><strong>Lua:</strong> 667ms (1.1x slower)</li>
+                    </ul>
+                </div>
+
+                <div style="background: #ecf0f1; padding: 1.5rem; border-radius: 8px; margin: 2rem 0;">
+                    <h3 style="margin-top: 0; color: #2c3e50;">Map Operations (100K set/get/delete)</h3>
+                    <ul style="line-height: 2; margin-bottom: 0;">
+                        <li><strong>Pebble:</strong> 133ms</li>
+                        <li><strong>Python:</strong> 137ms (≈ equal)</li>
+                        <li><strong>Lua:</strong> 197ms (1.5x slower)</li>
+                    </ul>
+                </div>
+
+                <p style="margin-top: 2rem; font-style: italic; color: #7f8c8d;">
+                    All benchmarks run on Linux x86_64 with compiler optimizations enabled.
+                </p>
+            </section>
+
+            <section class="doc-section">
+                <h2>Summary</h2>
+                <p>Pebble's performance comes from a combination of well-established techniques applied carefully:</p>
+                <ul style="line-height: 2;">
+                    <li>✓ NaN tagging eliminates primitive allocations</li>
+                    <li>✓ Lazy hash computation avoids unnecessary work</li>
+                    <li>✓ Compile-time symbol resolution for O(1) variable access</li>
+                    <li>✓ Reusable buffers minimize allocations</li>
+                    <li>✓ Bytecode compilation enables optimizations</li>
+                    <li>✓ Simple GC with low overhead</li>
+                </ul>
+                <p style="margin-top: 1.5rem;">
+                    These optimizations make Pebble suitable for both educational use and real-world applications where performance matters.
+                </p>
+            </section>
+        </main>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Pebble Language. Fast, simple, powerful.</p>
+            <p>
+                <a href="index.html">Home</a> |
+                <a href="documentation.html">Documentation</a> |
+                <a href="architecture.html">Architecture</a>
+            </p>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pebble - A Simple, Fast Scripting Language</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="public/pebble-icon.png">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <img src="public/pebble-icon.png" alt="Pebble Logo" class="logo">
+                <span class="brand-name">Pebble</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="documentation.html">Documentation</a></li>
+                <li><a href="cheatsheet.html">Cheatsheet</a></li>
+                <li><a href="download.html">Download</a></li>
+                <li><a href="architecture.html">Architecture</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <div class="container">
+            <h1>Pebble</h1>
+            <p class="tagline">A simple, fast scripting language for everyday tasks</p>
+            <p style="margin-top: 1rem; color: #95a5a6; font-size: 1.1rem;">Perfect for beginners, students, and teachers — yet powerful enough for real-world applications</p>
+            <div class="hero-buttons">
+                <a href="download.html" class="btn btn-primary">Download v0.1.0</a>
+                <a href="documentation.html" class="btn btn-secondary">Get Started</a>
+            </div>
+        </div>
+    </header>
+
+    <section style="background: linear-gradient(135deg, #34495e 0%, #2c3e50 100%); padding: 4rem 0; text-align: center;">
+        <div class="container">
+            <img src="public/pebble-icon.png" alt="Pebble Logo" style="width: 180px; height: 180px; margin-bottom: 1.5rem; filter: drop-shadow(0 10px 30px rgba(0,0,0,0.3));">
+            <h2 style="color: white; font-size: 2rem; margin: 0; font-weight: 600; text-shadow: 0 2px 10px rgba(0,0,0,0.2);">Built for Performance from the Ground Up</h2>
+        </div>
+    </section>
+
+    <section class="features">
+        <div class="container">
+            <h2>Why Pebble?</h2>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Blazing Fast</h3>
+                    <p>Bytecode interpreter with NaN-tagged values for exceptional performance. Outperforms Python and competitive with Lua.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎯</div>
+                    <h3>Simple Syntax</h3>
+                    <p>Clean, easy-to-learn syntax inspired by Python and Lua. Perfect for scripting, prototyping, and real applications.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔋</div>
+                    <h3>Batteries Included</h3>
+                    <p>Comprehensive built-in library with file I/O, JSON parsing, string manipulation, array/map operations, collision detection, texture rendering, audio playback, and game development utilities. Everything you need, right out of the box.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎮</div>
+                    <h3>Game Development Ready</h3>
+                    <p>Create games right out of the box! Built-in window creation, keyboard/mouse input, sprite rendering, collision detection, full audio support for music and sound effects. Everything you need for 2D games - no external libraries required.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔧</div>
+                    <h3>Built-in Types</h3>
+                    <p>Native support for arrays, maps, and records with powerful built-in operations.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🛠️</div>
+                    <h3>VS Code Extension</h3>
+                    <p>Full IDE support with syntax highlighting, error reporting, goto definition, and more.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="code-example">
+        <div class="container">
+            <h2>Quick Example</h2>
+            <div class="code-showcase">
+                <pre><code><span class="comment">## Fibonacci function with memoization</span>
+<span class="keyword">let</span> cache = {}
+
+<span class="keyword">def</span> <span class="function">fib</span>(n):
+    <span class="keyword">if</span> n &lt;= <span class="number">1</span>:
+        <span class="keyword">return</span> n
+    <span class="keyword">end</span>
+    
+    <span class="keyword">if</span> has_key(cache, n):
+        <span class="keyword">return</span> cache[n]
+    <span class="keyword">end</span>
+    
+    <span class="keyword">let</span> result = fib(n - <span class="number">1</span>) + fib(n - <span class="number">2</span>)
+    cache[n] = result
+    <span class="keyword">return</span> result
+<span class="keyword">end</span>
+
+print(fib(<span class="number">30</span>))  <span class="comment"># Fast execution!</span></code></pre>
+            </div>
+        </div>
+    </section>
+
+    <section class="getting-started">
+        <div class="container">
+            <h2>Getting Started</h2>
+            <p class="section-subtitle" style="margin-bottom: 3rem;">Get up and running in seconds. No dependencies, no configuration, no hassle.</p>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h3>Download Pebble</h3>
+                        <p>Grab the binary for your platform</p>
+                        <div style="margin-top: 1rem; display: flex; flex-direction: column; gap: 0.5rem; color: white;">
+                            <span style="background: #34495e; padding: 0.5rem 1rem; border-radius: 4px; display: inline-block;">🐧 Linux</span>
+                            <span style="background: #34495e; padding: 0.5rem 1rem; border-radius: 4px; display: inline-block;">🍎 macOS</span>
+                            <span style="background: #34495e; padding: 0.5rem 1rem; border-radius: 4px; display: inline-block;">🪟 Windows</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h3>Write Your Code</h3>
+                        <p>Create a hello.pbl file</p>
+                        <pre style="margin-top: 1rem;"><code><span class="function">io_print</span>(<span class="string">"Hello, Pebble!"</span>)
+
+<span class="keyword">let</span> x = <span class="number">42</span>
+<span class="function">io_print</span>(<span class="string">"The answer is"</span>, x)</code></pre>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h3>Run It</h3>
+                        <p>Execute your script instantly</p>
+                        <pre style="margin-top: 1rem;"><code><span class="comment">$ pebble hello.pbl</span>
+<span style="color: #abb2bf;">Hello, Pebble!
+The answer is 42</span></code></pre>
+                    </div>
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 3rem;">
+                <a href="download.html" class="btn btn-primary" style="font-size: 1.1rem; padding: 1rem 2.5rem;">Download Now</a>
+                <a href="documentation.html" class="btn btn-secondary" style="font-size: 1.1rem; padding: 1rem 2.5rem; margin-left: 1rem;">View Docs</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="performance">
+        <div class="container">
+            <h2>Performance Benchmarks</h2>
+            <p class="section-subtitle">Real-world performance comparisons</p>
+            
+            <h3 style="margin-top: 2rem; margin-bottom: 1rem;">Array Operations (100K push/pop + 1K insert/remove)</h3>
+            <div class="benchmark-grid">
+                <div class="benchmark-card pebble">
+                    <h3>Pebble</h3>
+                    <div class="benchmark-time">38-45ms</div>
+                    <div class="benchmark-bar" style="width: 100%; background: linear-gradient(90deg, #4a90e2, #50c878);"></div>
+                </div>
+                <div class="benchmark-card python">
+                    <h3>Python 3</h3>
+                    <div class="benchmark-time">39-46ms</div>
+                    <div class="benchmark-bar" style="width: 100%; background: linear-gradient(90deg, #50c878, #4a90e2);"></div>
+                    <span style="margin-left: 10px; color: #666; font-weight: bold;">≈ Equal</span>
+                </div>
+                <div class="benchmark-card lua">
+                    <h3>Lua 5.4</h3>
+                    <div class="benchmark-time">874-947ms</div>
+                    <div class="benchmark-bar" style="width: 50%; background: linear-gradient(90deg, #e74c3c, #c0392b);"></div>
+                    <span style="margin-left: 10px; color: #e74c3c; font-weight: bold;">22-24x slower</span>
+                </div>
+            </div>
+
+            <h3 style="margin-top: 3rem; margin-bottom: 1rem;">String Concatenation (50K iterations, 5 strings each) <span style="color: #95a5a6; font-size: 0.85rem; font-style: italic; font-weight: normal;">— result = result + "a" + "b" + "c" + "d" + "e"</span></h3>
+            <div class="benchmark-grid">
+                <div class="benchmark-card pebble">
+                    <h3>Pebble</h3>
+                    <div class="benchmark-time">25-39ms</div>
+                    <div class="benchmark-bar" style="width: 100%; background: linear-gradient(90deg, #4a90e2, #50c878);"></div>
+                </div>
+                <div class="benchmark-card python">
+                    <h3>Python 3</h3>
+                    <div class="benchmark-time">2858-2894ms</div>
+                    <div class="benchmark-bar" style="width: 10%; background: linear-gradient(90deg, #e74c3c, #c0392b);"></div>
+                    <span style="margin-left: 10px; color: #e74c3c; font-weight: bold;">114x slower</span>
+                </div>
+                <div class="benchmark-card lua">
+                    <h3>Lua 5.4</h3>
+                    <div class="benchmark-time">1020-1024ms</div>
+                    <div class="benchmark-bar" style="width: 25%; background: linear-gradient(90deg, #e74c3c, #c0392b);"></div>
+                    <span style="margin-left: 10px; color: #e74c3c; font-weight: bold;">40x slower</span>
+                </div>
+            </div>
+
+            <h3 style="margin-top: 3rem; margin-bottom: 1rem;">Binary Trees (depth 20, 2M+ allocations)</h3>
+            <div class="benchmark-grid">
+                <div class="benchmark-card pebble">
+                    <h3>Pebble</h3>
+                    <div class="benchmark-time">583ms</div>
+                    <div class="benchmark-bar" style="width: 100%; background: linear-gradient(90deg, #4a90e2, #50c878);"></div>
+                </div>
+                <div class="benchmark-card python">
+                    <h3>Python 3</h3>
+                    <div class="benchmark-time">2633ms</div>
+                    <div class="benchmark-bar" style="width: 35%; background: linear-gradient(90deg, #e74c3c, #c0392b);"></div>
+                    <span style="margin-left: 10px; color: #e74c3c; font-weight: bold;">4.5x slower</span>
+                </div>
+                <div class="benchmark-card lua">
+                    <h3>Lua 5.4</h3>
+                    <div class="benchmark-time">667ms</div>
+                    <div class="benchmark-bar" style="width: 90%; background: linear-gradient(90deg, #50c878, #4a90e2);"></div>
+                    <span style="margin-left: 10px; color: #666; font-weight: bold;">1.1x slower</span>
+                </div>
+            </div>
+
+            <h3 style="margin-top: 3rem; margin-bottom: 1rem;">Map Operations (100K set/get/delete cycles)</h3>
+            <div class="benchmark-grid">
+                <div class="benchmark-card pebble">
+                    <h3>Pebble</h3>
+                    <div class="benchmark-time">133ms</div>
+                    <div class="benchmark-bar" style="width: 100%; background: linear-gradient(90deg, #4a90e2, #50c878);"></div>
+                </div>
+                <div class="benchmark-card python">
+                    <h3>Python 3</h3>
+                    <div class="benchmark-time">137ms</div>
+                    <div class="benchmark-bar" style="width: 97%; background: linear-gradient(90deg, #50c878, #4a90e2);"></div>
+                    <span style="margin-left: 10px; color: #666; font-weight: bold;">≈ Equal</span>
+                </div>
+                <div class="benchmark-card lua">
+                    <h3>Lua 5.4</h3>
+                    <div class="benchmark-time">197ms</div>
+                    <div class="benchmark-bar" style="width: 70%; background: linear-gradient(90deg, #e74c3c, #c0392b);"></div>
+                    <span style="margin-left: 10px; color: #e74c3c; font-weight: bold;">1.5x slower</span>
+                </div>
+            </div>
+
+            <h3 style="margin-top: 3rem; margin-bottom: 1rem;">Records/OOP Operations (100K instance creations, 100K field accesses, 100K field updates)</h3>
+            <div class="benchmark-grid">
+                <div class="benchmark-card pebble">
+                    <h3>Pebble</h3>
+                    <div class="benchmark-time">38ms</div>
+                    <div class="benchmark-bar" style="width: 100%; background: linear-gradient(90deg, #4a90e2, #50c878);"></div>
+                </div>
+                <div class="benchmark-card python">
+                    <h3>Python 3</h3>
+                    <div class="benchmark-time">53ms</div>
+                    <div class="benchmark-bar" style="width: 71.7%; background: linear-gradient(90deg, #e74c3c, #c0392b);"></div>
+                    <span style="margin-left: 10px; color: #e74c3c; font-weight: bold;">1.4x slower</span>
+                </div>
+                <div class="benchmark-card python">
+                    <h3>Lua 5.4</h3>
+                    <div class="benchmark-time">53ms</div>
+                    <div class="benchmark-bar" style="width: 71.7%; background: linear-gradient(90deg, #e74c3c, #c0392b);"></div>
+                    <span style="margin-left: 10px; color: #e74c3c; font-weight: bold;">1.4x slower</span>
+                </div>
+            </div>
+        </div>
+    </section>
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Pebble Language. Fast, simple, powerful.</p>
+            <p>
+                <a href="index.html">Home</a>
+            </p>
+        </div>
+    </footer>
+</body>
+</html>
